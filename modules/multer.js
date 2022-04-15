@@ -13,8 +13,8 @@ const upload = multer({
         s3: s3,
         bucket: process.env.AWS_S3_BUCKET,
         acl: 'public-read',
-        key: (req, file, cb) => {
-            cb(null, Date.now() + '.' + file.originalname.split('.').pop());
+        key: function(req, file, cb) {
+            cb(null, Math.floor(Math.random() * 1000).toString() + Date.now() + '.' + file.originalname.split('.').pop());
         },
     }),
     limits: { fileSize: 3 * 1024 * 1024 },
