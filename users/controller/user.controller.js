@@ -67,4 +67,9 @@ module.exports = {
 
         res.send({ result: true, email, nickname });
     },
+    getMypage: (req, res) => {
+        const { userId } = req.params;
+        const result = userService.getAllByUserId(userId);
+        res.send({ result: true, result });
+    },
 };

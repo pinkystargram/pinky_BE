@@ -1,4 +1,5 @@
 const { User } = require('../../models');
+const { Post } = require('../../models');
 
 module.exports = {
     /**
@@ -45,6 +46,13 @@ module.exports = {
     chkByUserId: (userId) => {
         try {
             return User.findOne({ where: { userId } });
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    getAllByUserId: (userId) => {
+        try {
+            return User.findAll({ where: userId, include: [{ model: Post }] });
         } catch (error) {
             console.log(error);
         }

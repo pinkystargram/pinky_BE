@@ -5,7 +5,7 @@ module.exports = {
         const { content } = req.body;
         const image = req.file.location;
         console.log('postimage', req.file);
-        const userId = '9f393f58-e90d-4ff1-8e79-a8222cca1c01';
+        const userId = '3d5ae106-1c0b-4ea0-8df1-0fb7229c07c0';
         try {
             await postService.createPost(userId, content, image);
             res.status(201).json({
