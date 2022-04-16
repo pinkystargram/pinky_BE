@@ -20,6 +20,7 @@ module.exports = {
 
             const authUser = await userService.chkByUserId(authedToken.userId);
 
+            res.locals.userId = authUser.userId;
             res.locals.email = authUser.email;
             res.locals.nickname = authUser.nickname;
 
