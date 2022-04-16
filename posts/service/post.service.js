@@ -13,7 +13,7 @@ module.exports = {
         try {
             return User.findAll({
                 raw: true,
-                include: [{ model: Post, as: 'Posts', foreignKey: 'userId'}],
+                include: [{ model: Post, as: 'Posts', foreignKey: 'userId' }],
             });
         } catch (error) {
             console.log(error);
@@ -38,6 +38,22 @@ module.exports = {
         try {
             return Post.findAll({
                 include: [{ model: Comment, as: 'Comments', separate: true }],
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    postList2: async () => {
+        try {
+            return Post.findAll({
+                include: [{ model: Comment, as: 'Comments', separate: true }],
+                include: [
+                    {
+                        model: User,
+                        as: 'user',
+                        attributes: ['nickname'],
+                    },
+                ],
             });
         } catch (error) {
             console.log(error);

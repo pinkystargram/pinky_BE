@@ -51,7 +51,7 @@ module.exports = {
             const data = await postService.findPost(userId);
             console.log(data);
             res.status(200).json(data);
-          } catch (error) {
+        } catch (error) {
             console.log(error);
             res.status(400).json({
                 result: false,
@@ -82,8 +82,12 @@ module.exports = {
             for (i of postList) {
                 arr2.push(i);
             }
-            let arr3 = [];
             let arr4 = [];
+            const postList2 = await postService.postList2();
+            for (i of postList2) {
+                arr4.push(i);
+            }
+            let arr3 = [];
             // function merge(...arr) {
             //     return arr.reduce((acc, val) => {
             //         return { ...acc, ...val };
@@ -138,7 +142,7 @@ module.exports = {
             }
             const data = arr3;
             console.log(data);
-            res.status(201).json({ result: true, data });
+            res.status(201).json({ result: true, data, arr, arr2 });
         } catch (error) {
             console.log(error);
             res.status(400).json({
