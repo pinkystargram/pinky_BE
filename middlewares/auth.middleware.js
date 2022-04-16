@@ -1,41 +1,70 @@
 const userService = require('../users/service/user.service');
+const jwt = require('jsonwebtoken');
 
 module.exports = {
-    auth: async (req, res) => {
+    auth: async (req, res, next) => {
         try {
-            const { authorization } = req.headers;
-            const reAuthorization = req.headers.X - Authorization;
-            if (!authorization)
+            if (!req.headers.authorization)
                 return res
                     .status(401)
                     .send({ result: false, message: '로그인 후 사용하세요' });
+            const { authorization } = req.headers;
 
             const [tokenType, tokenValue] = authorization.split(' ');
-            const reTokenValue = reAuthorization.split(' ')[1];
             if (tokenType !== 'Bearer')
                 return res
                     .status(401)
                     .send({ result: false, message: '로그인 후 사용하세요' });
 
-            const userId = verify(tokenValue, reTokenValue);
+            const authedToken = jwt.verify(tokenValue, process.env.ACCESSKEY);
 
-            const authUser = await userService.chkByUserId(userId);
+            const authUser = await userService.chkByUserId(authedToken.userId);
 
-            return res.send({
-                result: true,
-                email: authUser.email,
-                nickname: authUser.nickname,
-            });
+            res.locals.userId = authUser.userId;
+            res.locals.email = authUser.email;
+            res.locals.nickname = authUser.nickname;
+
+            next();
         } catch (error) {
-            console.log(error);
-            res.send({ result: false, error });
-        }
-    },
-    verify: (token, reToken) => {
-        try {
-            const userId = jwt.verify(token, process.env.ACCESSKEY);
-        } catch (error) {
-            console.log(error);
+            try {
+                if (error.name === 'TokenExpiredError') {
+                    const reAuthorization = req.headers.reauthorization;
+                    const [reTokenType, reTokenValue] =
+                        reAuthorization.split(' ');
+                    if (reTokenType !== 'Bearer')
+                        return res.status(401).send({
+                            result: false,
+                            message: '로그인 후 사용하세요',
+                        });
+                    const reAuthedToken = jwt.verify(
+                        reTokenValue,
+                        process.env.REFRESHKEY
+                    );
+                    const reUser = await userService.chkByEmail(
+                        reAuthedToken.email
+                    );
+                    const payload = {
+                        userId: reUser.userId,
+                        nickname: reUser.nickname,
+                    };
+                    const newToken = jwt.sign(payload, process.env.ACCESSKEY, {
+                        expiresIn: '1h',
+                    });
+                    res.send({
+                        result: true,
+                        atoken: newToken,
+                    });
+                }
+            } catch (error) {
+                console.log(error);
+                if (error.name === 'TokenExpiredError') {
+                    res.send({
+                        result: false,
+                        message: '다시 로그인하셔야 합니다',
+                        error,
+                    });
+                }
+            }
         }
     },
 };

@@ -42,7 +42,7 @@ module.exports = {
 
             const payload = { userId: user.userId, nickname: user.nickname };
             const accessToken = await jwt.sign(payload, process.env.ACCESSKEY, {
-                expiresIn: '1h',
+                expiresIn: process.env.ATOKENEXPIRE,
             });
             const refreshToken = await jwt.sign(
                 { email: user.email },
@@ -61,5 +61,15 @@ module.exports = {
             console.log(error);
             res.send({ result: false, error });
         }
+    },
+    auth: (req, res) => {
+        const { email, nickname } = res.locals;
+
+        res.send({ result: true, email, nickname });
+    },
+    getMypage: (req, res) => {
+        const { userId } = req.params;
+        const result = userService.getAllByUserId(userId);
+        res.send({ result: true, result });
     },
 };

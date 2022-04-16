@@ -51,6 +51,29 @@ module.exports = {
             const data = await postService.findPost(userId);
             console.log(data);
             res.status(200).json(data);
+          } catch (error) {
+            console.log(error);
+            res.status(400).json({
+                result: false,
+                message: '게시글 조회 중 오류가 발생하였습니다.',
+            });
+        }
+    },
+    list: async (req, res) => {
+        // const { userId } = res.locals.user;
+        const userId = '3d5ae106-1c0b-4ea0-8df1-0fb7229c07c0';
+
+        try {
+            const followerUserIdList = await postService.followerList(userId);
+            console.log(followerUserIdList, 'followerUserIdList');
+            // const followerPosts = await postService.followerPostList(
+            //     followerUserIdList
+            // );
+            // console.log(followerPosts, 'followerPosts');
+            // const nonFollowerPosts = await postService.nonFollowerPostList(
+            //     followerUserIdList
+            // );
+            // console.log(nonFollowerPosts, 'nonFollowerPosts');
         } catch (error) {
             console.log(error);
             res.status(400).json({

@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const { UUIDV4 } = require('sequelize');
 module.exports = function (sequelize, DataTypes) {
-    return sequelize.define(
+    const Follow = sequelize.define(
         'Follow',
         {
             followId: {
@@ -38,4 +38,8 @@ module.exports = function (sequelize, DataTypes) {
             ],
         }
     );
+    Follow.assoiate = (models) => {
+        Follow.belongsTo(models.User, { as: 'user', foreignKey: 'userId' });
+    };
+    return Follow;
 };

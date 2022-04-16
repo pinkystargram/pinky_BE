@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const { UUIDV4 } = require('sequelize');
 
 module.exports = function (sequelize, DataTypes) {
-    return sequelize.define(
+    const Bookmark = sequelize.define(
         'Bookmark',
         {
             bookmarkId: {
@@ -58,4 +58,9 @@ module.exports = function (sequelize, DataTypes) {
             ],
         }
     );
+    Bookmark.assoiate = (models) => {
+        Bookmark.belongsTo(models.Post, { as: 'post', foreignKey: 'postId' });
+        Bookmark.belongsTo(models.User, { as: 'user', foreignKey: 'userId' });
+    };
+    return Bookmark;
 };

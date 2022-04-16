@@ -4,7 +4,10 @@ const upload = require('../middlewares/multer');
 
 const postController = require('./controller/post.controller');
 
+router.get('/', postController.list);
+
 router.post('/', upload.single('image'), postController.post);
-router.get('/', postController.viewPost);
+
+router.get('/:postId', postController.viewPost);
 
 module.exports = router;

@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const { UUIDV4 } = require('sequelize');
 module.exports = function (sequelize, DataTypes) {
-    return sequelize.define(
+    const Post = sequelize.define(
         'Post',
         {
             postId: {
@@ -51,4 +51,33 @@ module.exports = function (sequelize, DataTypes) {
             ],
         }
     );
+
+    Post.associate = (models) => {
+        Post.hasMany(models.Like, { as: 'Likes', foreignKey: 'postId' });
+        Post.hasMany(models.Comment, { as: 'Comments', foreignKey: 'postId' });
+        Post.hasMany(models.Bookmark, {
+            as: 'Bookmarks',
+            foreignKey: 'postId',
+        });
+        Post.belongsTo(models.User, { as: 'user', foreignKey: 'userId' });
+        Post.belongsToMany(models.User, {
+            as: 'userId_Users',
+            through: 'Bookmark',
+            foreignKey: 'postId',
+            otherKey: 'userId',
+        });
+        Post.belongsToMany(models.User, {
+            as: 'userId_User_Comments',
+            through: 'Comment',
+            foreignKey: 'postId',
+            otherKey: 'userId',
+        });
+        Post.belongsToMany(models.User, {
+            as: 'userId_User_Likes',
+            through: 'Like',
+            foreignKey: 'postId',
+            otherKey: 'userId',
+        });
+    };
+    return Post;
 };
