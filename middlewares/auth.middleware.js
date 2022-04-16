@@ -54,10 +54,22 @@ module.exports = {
                         result: true,
                         atoken: newToken,
                     });
+                } else {
+                    res.send({
+                        result: false,
+                        message: '다시 로그인하셔야 합니다',
+                        error,
+                    });
                 }
             } catch (error) {
                 console.log(error);
                 if (error.name === 'TokenExpiredError') {
+                    res.send({
+                        result: false,
+                        message: '다시 로그인하셔야 합니다',
+                        error,
+                    });
+                } else {
                     res.send({
                         result: false,
                         message: '다시 로그인하셔야 합니다',
