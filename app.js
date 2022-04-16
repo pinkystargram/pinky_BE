@@ -4,7 +4,6 @@ const app = express();
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const morgan = require('morgan');
-const sequelize = require('./models').sequelize;
 
 app.use(cors());
 app.use(morgan('dev'));
@@ -19,7 +18,6 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.disable('x-powered-by');
-sequelize.sync({ force: true });
 
 const Router = require('./routes');
 app.use('/api', Router);
