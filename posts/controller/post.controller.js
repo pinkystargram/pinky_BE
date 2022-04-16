@@ -51,7 +51,7 @@ module.exports = {
             const data = await postService.findPost(userId);
             console.log(data);
             res.status(200).json(data);
-          } catch (error) {
+        } catch (error) {
             console.log(error);
             res.status(400).json({
                 result: false,

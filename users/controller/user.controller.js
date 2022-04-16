@@ -50,6 +50,8 @@ module.exports = {
                 { expiresIn: '3d' }
             );
 
+            res.cookie('atoken', accessToken, { httpOnly: true });
+            res.cookie('rtoken', refreshToken, { httpOnly: true });
             res.send({
                 result: true,
                 atoken: accessToken,
@@ -67,9 +69,10 @@ module.exports = {
 
         res.send({ result: true, email, nickname });
     },
-    getMypage: (req, res) => {
+    getMypage: async (req, res) => {
         const { userId } = req.params;
-        const result = userService.getAllByUserId(userId);
-        res.send({ result: true, result });
+        const test = await userService.getAllByUserId(userId);
+        console.log(test);
+        res.send({ result: true, test });
     },
 };
