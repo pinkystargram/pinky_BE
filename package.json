@@ -5,13 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "test",
-    "prettify": "prettier --write *.js **/*.js",
+    "prettify": "prettier --write *.js **/*.js **/**/*.js",
     "nodemon": "nodemon server.js",
     "start:all": "run-s prettify nodemon"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.1115.0",
     "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -31,6 +32,7 @@
     "nodemon": "^2.0.15",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.6.2",
+    "sequelize-auto": "^0.8.8",
     "sequelize-cli": "^6.4.1",
     "swagger-autogen": "^2.21.0",
     "swagger-ui-express": "^4.3.0"
