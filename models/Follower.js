@@ -32,7 +32,7 @@ module.exports = function (sequelize, DataTypes) {
                     fields: [{ name: 'followerId' }, { name: 'userId' }],
                 },
                 {
-                    name: 'Follower_FK',
+                    name: 'FK_User_TO_Follower_1',
                     using: 'BTREE',
                     fields: [{ name: 'userId' }],
                 },

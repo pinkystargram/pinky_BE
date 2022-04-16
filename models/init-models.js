@@ -16,37 +16,37 @@ function initModels(sequelize) {
     var Post = _Post(sequelize, DataTypes);
     var User = _User(sequelize, DataTypes);
 
-    Post.belongsToMany(Post, {
-        as: 'userId_Posts',
+    Post.belongsToMany(User, {
+        as: 'userId_Users',
         through: Bookmark,
         foreignKey: 'postId',
         otherKey: 'userId',
     });
-    Post.belongsToMany(Post, {
+    Post.belongsToMany(User, {
+        as: 'userId_User_Comments',
+        through: Comment,
+        foreignKey: 'postId',
+        otherKey: 'userId',
+    });
+    Post.belongsToMany(User, {
+        as: 'userId_User_Likes',
+        through: Like,
+        foreignKey: 'postId',
+        otherKey: 'userId',
+    });
+    User.belongsToMany(Post, {
         as: 'postId_Posts',
         through: Bookmark,
         foreignKey: 'userId',
         otherKey: 'postId',
     });
-    Post.belongsToMany(Post, {
-        as: 'userId_Post_Comments',
-        through: Comment,
-        foreignKey: 'postId',
-        otherKey: 'userId',
-    });
-    Post.belongsToMany(Post, {
+    User.belongsToMany(Post, {
         as: 'postId_Post_Comments',
         through: Comment,
         foreignKey: 'userId',
         otherKey: 'postId',
     });
-    Post.belongsToMany(Post, {
-        as: 'userId_Post_Likes',
-        through: Like,
-        foreignKey: 'postId',
-        otherKey: 'userId',
-    });
-    Post.belongsToMany(Post, {
+    User.belongsToMany(Post, {
         as: 'postId_Post_Likes',
         through: Like,
         foreignKey: 'userId',
@@ -54,20 +54,20 @@ function initModels(sequelize) {
     });
     Bookmark.belongsTo(Post, { as: 'post', foreignKey: 'postId' });
     Post.hasMany(Bookmark, { as: 'Bookmarks', foreignKey: 'postId' });
-    Bookmark.belongsTo(Post, { as: 'user', foreignKey: 'userId' });
-    Post.hasMany(Bookmark, { as: 'user_Bookmarks', foreignKey: 'userId' });
     Comment.belongsTo(Post, { as: 'post', foreignKey: 'postId' });
     Post.hasMany(Comment, { as: 'Comments', foreignKey: 'postId' });
-    Comment.belongsTo(Post, { as: 'user', foreignKey: 'userId' });
-    Post.hasMany(Comment, { as: 'user_Comments', foreignKey: 'userId' });
     Like.belongsTo(Post, { as: 'post', foreignKey: 'postId' });
     Post.hasMany(Like, { as: 'Likes', foreignKey: 'postId' });
-    Like.belongsTo(Post, { as: 'user', foreignKey: 'userId' });
-    Post.hasMany(Like, { as: 'user_Likes', foreignKey: 'userId' });
+    Bookmark.belongsTo(User, { as: 'user', foreignKey: 'userId' });
+    User.hasMany(Bookmark, { as: 'Bookmarks', foreignKey: 'userId' });
+    Comment.belongsTo(User, { as: 'user', foreignKey: 'userId' });
+    User.hasMany(Comment, { as: 'Comments', foreignKey: 'userId' });
     Follow.belongsTo(User, { as: 'user', foreignKey: 'userId' });
     User.hasMany(Follow, { as: 'Follows', foreignKey: 'userId' });
     Follower.belongsTo(User, { as: 'user', foreignKey: 'userId' });
     User.hasMany(Follower, { as: 'Followers', foreignKey: 'userId' });
+    Like.belongsTo(User, { as: 'user', foreignKey: 'userId' });
+    User.hasMany(Like, { as: 'Likes', foreignKey: 'userId' });
     Post.belongsTo(User, { as: 'user', foreignKey: 'userId' });
     User.hasMany(Post, { as: 'Posts', foreignKey: 'userId' });
 
