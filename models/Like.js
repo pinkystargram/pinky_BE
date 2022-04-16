@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const { UUIDV4 } = require('sequelize');
 module.exports = function (sequelize, DataTypes) {
-    return sequelize.define(
+    const Like = sequelize.define(
         'Like',
         {
             likeId: {
@@ -57,4 +57,9 @@ module.exports = function (sequelize, DataTypes) {
             ],
         }
     );
+    Like.assoiate = (models) => {
+        Like.belongsTo(models.User, { as: 'user', foreignKey: 'userId' });
+        Like.belongsTo(models.Post, { as: 'post', foreignKey: 'postId' });
+    };
+    return Like;
 };
