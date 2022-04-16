@@ -11,7 +11,10 @@ module.exports = {
     },
     findPost: async (userId) => {
         try {
-            return User.findOne({ where: { userId } });
+            return User.findAll({
+                raw: true,
+                include: [{ model: Post, as: 'Posts', foreignKey: 'userId'}],
+            });
         } catch (error) {
             console.log(error);
         }

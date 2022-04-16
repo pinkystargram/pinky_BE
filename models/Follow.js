@@ -6,7 +6,6 @@ module.exports = function (sequelize, DataTypes) {
         {
             followId: {
                 type: DataTypes.STRING(255),
-                defaultValue: UUIDV4,
                 allowNull: false,
                 primaryKey: true,
             },
