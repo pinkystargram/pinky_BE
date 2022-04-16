@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const { UUIDV4 } = require('sequelize');
+
 module.exports = function (sequelize, DataTypes) {
     return sequelize.define(
         'Bookmark',
@@ -24,7 +25,7 @@ module.exports = function (sequelize, DataTypes) {
                 allowNull: false,
                 primaryKey: true,
                 references: {
-                    model: 'Post',
+                    model: 'User',
                     key: 'userId',
                 },
             },
@@ -45,9 +46,14 @@ module.exports = function (sequelize, DataTypes) {
                     ],
                 },
                 {
-                    name: 'Bookmark_FK',
+                    name: 'FK_Post_TO_Bookmark_1',
                     using: 'BTREE',
-                    fields: [{ name: 'postId' }, { name: 'userId' }],
+                    fields: [{ name: 'postId' }],
+                },
+                {
+                    name: 'FK_User_TO_Bookmark_1',
+                    using: 'BTREE',
+                    fields: [{ name: 'userId' }],
                 },
             ],
         }

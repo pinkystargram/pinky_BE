@@ -27,6 +27,10 @@ module.exports = function (sequelize, DataTypes) {
                 type: DataTypes.STRING(100),
                 allowNull: false,
             },
+            location: {
+                type: DataTypes.STRING(200),
+                allowNull: true,
+            },
         },
         {
             sequelize,
@@ -40,7 +44,7 @@ module.exports = function (sequelize, DataTypes) {
                     fields: [{ name: 'postId' }, { name: 'userId' }],
                 },
                 {
-                    name: 'Post_FK',
+                    name: 'FK_User_TO_Post_1',
                     using: 'BTREE',
                     fields: [{ name: 'userId' }],
                 },
