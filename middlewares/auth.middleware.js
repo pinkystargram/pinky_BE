@@ -48,7 +48,7 @@ module.exports = {
                         nickname: reUser.nickname,
                     };
                     const newToken = jwt.sign(payload, process.env.ACCESSKEY, {
-                        expiresIn: '1h',
+                        expiresIn: process.env.ATOKENEXPIRE,
                     });
                     res.send({
                         result: true,

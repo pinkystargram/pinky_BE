@@ -13,7 +13,7 @@ module.exports = {
         try {
             return User.findAll({
                 raw: true,
-                include: [{ model: Post, as: 'Posts', foreignKey: 'userId'}],
+                include: [{ model: Post, as: 'Posts', foreignKey: 'userId' }],
             });
         } catch (error) {
             console.log(error);
