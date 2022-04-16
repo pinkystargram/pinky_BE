@@ -47,7 +47,7 @@ module.exports = {
             const refreshToken = await jwt.sign(
                 { email: user.email },
                 process.env.REFRESHKEY,
-                { expiresIn: '3d' }
+                { expiresIn: process.env.RTOKENEXPIRE }
             );
 
             res.cookie('atoken', accessToken, { httpOnly: true });

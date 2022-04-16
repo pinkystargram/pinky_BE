@@ -1,12 +1,10 @@
 const Sequelize = require('sequelize');
-const { UUIDV4 } = require('sequelize');
 module.exports = function (sequelize, DataTypes) {
-    const User = sequelize.define(
+    return sequelize.define(
         'User',
         {
             userId: {
                 type: DataTypes.STRING(255),
-                defaultValue: UUIDV4,
                 allowNull: false,
                 primaryKey: true,
             },
@@ -15,7 +13,7 @@ module.exports = function (sequelize, DataTypes) {
                 allowNull: false,
             },
             password: {
-                type: DataTypes.STRING(50),
+                type: DataTypes.STRING(200),
                 allowNull: false,
             },
             nickname: {
@@ -55,37 +53,4 @@ module.exports = function (sequelize, DataTypes) {
             ],
         }
     );
-    User.assoiate = (models) => {
-        User.hasMany(models.Post, { as: 'Posts', foreignKey: 'userId' });
-        User.hasMany(models.Like, { as: 'Likes', foreignKey: 'userId' });
-        User.hasMany(models.Follower, {
-            as: 'Followers',
-            foreignKey: 'userId',
-        });
-        User.hasMany(models.Follow, { as: 'Follows', foreignKey: 'userId' });
-        User.hasMany(models.Comment, { as: 'Comments', foreignKey: 'userId' });
-        User.hasMany(models.Bookmark, {
-            as: 'Bookmarks',
-            foreignKey: 'userId',
-        });
-        User.belongsToMany(models.Post, {
-            as: 'postId_Posts',
-            through: 'Bookmark',
-            foreignKey: 'userId',
-            otherKey: 'postId',
-        });
-        User.belongsToMany(models.Post, {
-            as: 'postId_Post_Comments',
-            through: 'Comment',
-            foreignKey: 'userId',
-            otherKey: 'postId',
-        });
-        User.belongsToMany(models.Post, {
-            as: 'postId_Post_Likes',
-            through: 'Like',
-            foreignKey: 'userId',
-            otherKey: 'postId',
-        });
-    };
-    return User;
 };
