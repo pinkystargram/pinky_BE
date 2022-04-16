@@ -1,12 +1,10 @@
 const Sequelize = require('sequelize');
-const { UUIDV4 } = require('sequelize');
 module.exports = function (sequelize, DataTypes) {
-    const Comment = sequelize.define(
+    return sequelize.define(
         'Comment',
         {
             commentId: {
                 type: DataTypes.STRING(255),
-                defaultValue: UUIDV4,
                 allowNull: false,
                 primaryKey: true,
             },
@@ -14,10 +12,6 @@ module.exports = function (sequelize, DataTypes) {
                 type: DataTypes.STRING(255),
                 allowNull: false,
                 primaryKey: true,
-                references: {
-                    model: 'Post',
-                    key: 'postId',
-                },
             },
             userId: {
                 type: DataTypes.STRING(255),
@@ -61,9 +55,4 @@ module.exports = function (sequelize, DataTypes) {
             ],
         }
     );
-    Comment.assoiate = (models) => {
-        Comment.belongsTo(models.User, { as: 'user', foreignKey: 'userId' });
-        Comment.belongsTo(models.Post, { as: 'post', foreignKey: 'postId' });
-    };
-    return Comment;
 };
