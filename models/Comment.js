@@ -51,7 +51,7 @@ module.exports = function (sequelize, DataTypes) {
                 {
                     name: 'Comment_FK',
                     using: 'BTREE',
-                    fields: [{ name: 'postId' }, { name: 'userId' }],
+                    fields: [{ name: 'postId' }],
                 },
             ],
         }

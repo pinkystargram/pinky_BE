@@ -28,30 +28,30 @@ function initModels(sequelize) {
         foreignKey: 'userId',
         otherKey: 'postId',
     });
-    Post.belongsToMany(Post, {
-        as: 'userId_Post_Comments',
-        through: Comment,
-        foreignKey: 'postId',
-        otherKey: 'userId',
-    });
-    Post.belongsToMany(Post, {
-        as: 'postId_Post_Comments',
-        through: Comment,
-        foreignKey: 'userId',
-        otherKey: 'postId',
-    });
-    Post.belongsToMany(Post, {
-        as: 'userId_Post_Likes',
-        through: Like,
-        foreignKey: 'postId',
-        otherKey: 'userId',
-    });
-    Post.belongsToMany(Post, {
-        as: 'postId_Post_Likes',
-        through: Like,
-        foreignKey: 'userId',
-        otherKey: 'postId',
-    });
+    // Post.belongsToMany(Post, {
+    //     as: 'userId_Post_Comments',
+    //     through: Comment,
+    //     foreignKey: 'postId',
+    //     otherKey: 'userId',
+    // });
+    // Post.belongsToMany(Post, {
+    //     as: 'postId_Post_Comments',
+    //     through: Comment,
+    //     foreignKey: 'userId',
+    //     otherKey: 'postId',
+    // });
+    // Post.belongsToMany(Post, {
+    //     as: 'userId_Post_Likes',
+    //     through: Like,
+    //     foreignKey: 'postId',
+    //     otherKey: 'userId',
+    // });
+    // Post.belongsToMany(Post, {
+    //     as: 'postId_Post_Likes',
+    //     through: Like,
+    //     foreignKey: 'userId',
+    //     otherKey: 'postId',
+    // });
     Bookmark.belongsTo(Post, { as: 'post', foreignKey: 'postId' });
     Post.hasMany(Bookmark, { as: 'Bookmarks', foreignKey: 'postId' });
     Bookmark.belongsTo(Post, { as: 'user', foreignKey: 'userId' });
