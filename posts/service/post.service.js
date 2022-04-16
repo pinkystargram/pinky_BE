@@ -1,4 +1,4 @@
-const { User, Post, Follower, Like } = require('../../models');
+const { User, Post, Follower, Comment } = require('../../models');
 const { Op } = require('sequelize');
 
 module.exports = {
@@ -16,21 +16,45 @@ module.exports = {
             console.log(error);
         }
     },
+    postUserList: async () => {
+        try {
+            return Post.findAll({
+                include: [
+                    {
+                        model: User,
+                        as: 'user',
+                        attributes: ['nickname'],
+                    },
+                ],
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    postList: async () => {
+        try {
+            return Post.findAll({
+                include: [{ model: Comment, as: 'Comments', separate: true }],
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    },
     followerList: async (userId) => {
         try {
             return Follower.findAll({ where: { userId } });
         } catch (error) {
-            console.log('serviceErrer', error);
+            console.log(error);
         }
     },
     followerPostList: async (userId) => {
         try {
             return Post.findAll({
-                include: [{ model: User, attributes: ['nickname'] }],
+                include: [{ model: Comment, as: 'Comments' }],
                 where: { userId },
             });
         } catch (error) {
-            console.log('serviceErrer', error);
+            console.log(error);
         }
     },
     nonFollowerPostList: async (userId) => {
@@ -40,7 +64,7 @@ module.exports = {
                 where: { [Op.ne]: [{ userId }] },
             });
         } catch (error) {
-            console.log('serviceErrer', error);
+            console.log(error);
         }
     },
 };
