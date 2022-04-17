@@ -1,11 +1,4 @@
-const {
-    User,
-    Post,
-    Follower,
-    Comment,
-    Like,
-    Bookmark,
-} = require('../../models');
+const { User, Post, Follow, Comment, Like, Bookmark } = require('../../models');
 const { Op } = require('sequelize');
 
 module.exports = {
@@ -51,9 +44,9 @@ module.exports = {
             console.log(error);
         }
     },
-    followerList: async (userId) => {
+    followList: async () => {
         try {
-            return Follower.findAll({ where: { userId } });
+            return Follow.findAll({});
         } catch (error) {
             console.log(error);
         }
