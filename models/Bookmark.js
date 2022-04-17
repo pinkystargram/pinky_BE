@@ -17,6 +17,7 @@ module.exports = function (sequelize, DataTypes) {
                     model: 'Post',
                     key: 'postId',
                 },
+
             },
             userId: {
                 type: DataTypes.STRING(255),

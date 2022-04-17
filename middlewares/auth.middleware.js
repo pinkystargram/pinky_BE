@@ -48,17 +48,32 @@ module.exports = {
                         nickname: reUser.nickname,
                     };
                     const newToken = jwt.sign(payload, process.env.ACCESSKEY, {
-                        expiresIn: '1h',
+                        expiresIn: process.env.ATOKENEXPIRE,
                     });
                     res.send({
                         result: true,
                         atoken: newToken,
+                        email: reUser.email,
+                        nickname: reUser.nickname,
+                    });
+                } else {
+                    console.log(error);
+                    res.status(401).send({
+                        result: false,
+                        message: '다시 로그인하셔야 합니다',
+                        error,
                     });
                 }
             } catch (error) {
-                console.log(error);
                 if (error.name === 'TokenExpiredError') {
-                    res.send({
+                    res.status(401).send({
+                        result: false,
+                        message: '다시 로그인하셔야 합니다',
+                        error,
+                    });
+                } else {
+                    console.log(error);
+                    res.status(401).send({
                         result: false,
                         message: '다시 로그인하셔야 합니다',
                         error,

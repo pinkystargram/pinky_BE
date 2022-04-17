@@ -1,5 +1,4 @@
-const { User } = require('../../models');
-const { Post } = require('../../models');
+const { User, Post } = require('../../models');
 
 module.exports = {
     /**
@@ -52,7 +51,10 @@ module.exports = {
     },
     getAllByUserId: (userId) => {
         try {
-            return User.findAll({ where: userId, include: [{ model: Post }] });
+            return User.findAll({
+                where: { userId },
+                include: [{ model: Post, as: 'Posts', foreignKey: 'userId' }],
+            });
         } catch (error) {
             console.log(error);
         }
