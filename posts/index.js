@@ -5,7 +5,7 @@ const authMiddleware = require('../middlewares/auth.middleware');
 
 const postController = require('./controller/post.controller');
 
-router.get('/', postController.list);
+router.get('/', postController.viewPostList);
 
 router.post(
     '/',

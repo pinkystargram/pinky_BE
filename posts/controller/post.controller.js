@@ -59,15 +59,73 @@ module.exports = {
             });
         }
     },
-    list: async (req, res) => {
+    viewPostList: async (req, res) => {
         // const { userId } = res.locals.user;
-        const userId = 'dcafc73d-07c6-4df3-9472-2608c30c3f6d';
+        const userId = '24ad089c-6336-46dc-9414-86604c048ac2';
 
         try {
             const postList = await postService.postList();
 
-            console.log(postList);
-            res.status(201).json({ result: true, postList });
+            let data = [];
+
+            for (i of postList) {
+                const likes = i.Likes;
+                const likeCount = likes.length;
+
+                const comments = i.Comments;
+                const commentCount = comments.length;
+
+                const { nickname } = i.user;
+                const {
+                    postId,
+                    userId,
+                    content,
+                    imageUrl,
+                    location,
+                    createdAt,
+                    updatedAt,
+                } = i;
+                let comment = [];
+                const { Comments, Likes, Bookmarks } = i;
+                for (j of Comments) {
+                    const {
+                        commentId,
+                        userId,
+                        postId,
+                        content,
+                        createdAt,
+                        updatedAt,
+                    } = j;
+                    const { nickname } = j.user;
+                    comment.push({
+                        commentId,
+                        userId,
+                        nickname,
+                        content,
+                        createdAt,
+                        updatedAt,
+                    });
+                }
+                data.push({
+                    postId,
+                    userId,
+                    nickname,
+                    content,
+                    imageUrl,
+                    location,
+                    commentCount,
+                    likeCount,
+                    createdAt,
+                    updatedAt,
+                    comment,
+                    Likes,
+                    Bookmarks,
+                });
+            }
+            res.status(201).json({
+                result: true,
+                data,
+            });
         } catch (error) {
             console.log(error);
             res.status(400).json({
