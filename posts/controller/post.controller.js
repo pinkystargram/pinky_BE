@@ -48,7 +48,7 @@ module.exports = {
                         content,
                         createdAt,
                         updatedAt,
-                        profileImageUrl
+                        profileImageUrl,
                     });
                 }
                 data.push({
@@ -252,7 +252,7 @@ module.exports = {
                         content,
                         createdAt,
                         updatedAt,
-                        profileImageUrl
+                        profileImageUrl,
                     });
                 }
                 data.push({
