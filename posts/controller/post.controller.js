@@ -12,7 +12,7 @@ module.exports = {
 
             let data = [];
 
-            for (i of postList) {
+            for (let i of postList) {
                 const likes = i.Likes;
                 const likeCount = likes.length;
 
@@ -31,7 +31,7 @@ module.exports = {
                 } = i;
                 let comment = [];
                 const { Comments, Likes, Bookmarks } = i;
-                for (j of Comments) {
+                for (let j of Comments) {
                     const {
                         commentId,
                         userId,
@@ -216,7 +216,7 @@ module.exports = {
 
             let data = [];
 
-            for (i of postList) {
+            for (let i of postList) {
                 const likes = i.Likes;
                 const likeCount = likes.length;
 
@@ -235,7 +235,7 @@ module.exports = {
                 } = i;
                 let comment = [];
                 const { Comments, Likes, Bookmarks } = i;
-                for (j of Comments) {
+                for (let j of Comments) {
                     const {
                         commentId,
                         userId,
