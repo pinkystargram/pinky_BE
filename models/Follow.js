@@ -18,6 +18,14 @@ module.exports = function (sequelize, DataTypes) {
                     key: 'userId',
                 },
             },
+            targetId: {
+                type: DataTypes.STRING(255),
+                allowNull: false,
+                references: {
+                    model: 'User',
+                    key: 'userId',
+                },
+            },
         },
         {
             sequelize,
@@ -32,6 +40,11 @@ module.exports = function (sequelize, DataTypes) {
                 },
                 {
                     name: 'FK_User_TO_Follow_1',
+                    using: 'BTREE',
+                    fields: [{ name: 'userId' }],
+                },
+                {
+                    name: 'Follow_FK',
                     using: 'BTREE',
                     fields: [{ name: 'userId' }],
                 },

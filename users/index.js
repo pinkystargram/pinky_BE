@@ -11,5 +11,6 @@ router.post('/login', userController.login);
 router.get('/auth', authMiddleware.auth, userController.auth);
 
 router.get('/:userId/mypage', authMiddleware.auth, mypageController.getMypage);
+router.post('/:userId/follow', authMiddleware.auth, mypageController.follow);
 
 module.exports = router;
