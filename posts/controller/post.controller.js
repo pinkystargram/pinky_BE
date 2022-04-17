@@ -86,14 +86,22 @@ module.exports = {
             const data = await postService.findPost(postId);
             const commentList = [];
             for (let i = 0; i < data.Comments.length; i++) {
-                const commentId = data.Comments[i].commentId
-                const userId = data.Comments[i].userId
-                const nickname = data.Comments[i].user.nickname
-                const content = data.Comments[i].content
-                const createdAt = data.Comments[i].createdAt
-                const updatedAt = data.Comments[i].updatedAt
-                const profileImageUrl = data.Comments[i].user.profileImageUrl
-                commentList.push({commentId, userId, nickname, content, createdAt, updatedAt, profileImageUrl});
+                const commentId = data.Comments[i].commentId;
+                const userId = data.Comments[i].userId;
+                const nickname = data.Comments[i].user.nickname;
+                const content = data.Comments[i].content;
+                const createdAt = data.Comments[i].createdAt;
+                const updatedAt = data.Comments[i].updatedAt;
+                const profileImageUrl = data.Comments[i].user.profileImageUrl;
+                commentList.push({
+                    commentId,
+                    userId,
+                    nickname,
+                    content,
+                    createdAt,
+                    updatedAt,
+                    profileImageUrl,
+                });
             }
 
             res.status(200).json({
@@ -110,8 +118,8 @@ module.exports = {
                     updatedAt: data.updatedAt,
                     commentList: commentList,
                     likeList: data.Likes,
-                    bookmarkList: data.Bookmarks
-                }
+                    bookmarkList: data.Bookmarks,
+                },
             });
         } catch (error) {
             console.log(error);
