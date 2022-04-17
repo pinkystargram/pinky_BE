@@ -1,4 +1,11 @@
-const { User, Post, Follower, Comment } = require('../../models');
+const {
+    User,
+    Post,
+    Follower,
+    Comment,
+    Like,
+    Bookmark,
+} = require('../../models');
 const { Op } = require('sequelize');
 
 module.exports = {
@@ -23,17 +30,21 @@ module.exports = {
         try {
             return Post.findAll({
                 include: [
+                    { model: User, as: 'user', attributes: ['nickname'] },
                     {
                         model: Comment,
                         as: 'Comments',
+
                         include: [
                             {
                                 model: User,
                                 as: 'user',
-                                attributes: ['nickname'],
+                                attributes: ['nickname', 'profileImageUrl'],
                             },
                         ],
                     },
+                    { model: Like, as: 'Likes' },
+                    { model: Bookmark, as: 'Bookmarks' },
                 ],
             });
         } catch (error) {
