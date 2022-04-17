@@ -40,7 +40,7 @@ module.exports = {
                         createdAt,
                         updatedAt,
                     } = j;
-                    const { nickname } = j.user;
+                    const { nickname, profileImageUrl } = j.user;
                     comment.push({
                         commentId,
                         userId,
@@ -48,6 +48,7 @@ module.exports = {
                         content,
                         createdAt,
                         updatedAt,
+                        profileImageUrl
                     });
                 }
                 data.push({
@@ -56,14 +57,14 @@ module.exports = {
                     nickname,
                     content,
                     imageUrl,
-                    location,
                     commentCount,
                     likeCount,
-                    createdAt,
-                    updatedAt,
-                    comment,
-                    Likes,
-                    Bookmarks,
+                    location,
+                    // createdAt,
+                    // updatedAt,
+                    commentList: comment,
+                    likeList: Likes,
+                    // bookmarkList: Bookmarks,
                 });
             }
             res.status(201).json({
@@ -207,7 +208,6 @@ module.exports = {
     updatePost: async (req, res) => {
         const { content } = req.body;
         const { postId } = req.params;
-        console.log('?', postId);
         const userId = res.locals.userId;
         try {
             await postService.updatePost(postId, content);
@@ -244,7 +244,7 @@ module.exports = {
                         createdAt,
                         updatedAt,
                     } = j;
-                    const { nickname } = j.user;
+                    const { nickname, profileImageUrl } = j.user;
                     comment.push({
                         commentId,
                         userId,
@@ -252,6 +252,7 @@ module.exports = {
                         content,
                         createdAt,
                         updatedAt,
+                        profileImageUrl
                     });
                 }
                 data.push({
@@ -260,14 +261,14 @@ module.exports = {
                     nickname,
                     content,
                     imageUrl,
-                    location,
                     commentCount,
                     likeCount,
-                    createdAt,
-                    updatedAt,
-                    comment,
-                    Likes,
-                    Bookmarks,
+                    location,
+                    // createdAt,
+                    // updatedAt,
+                    commentList: comment,
+                    likeList: Likes,
+                    // bookmarkList: Bookmarks,
                 });
             }
             res.status(201).json({
