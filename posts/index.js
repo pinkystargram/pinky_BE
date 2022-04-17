@@ -15,5 +15,6 @@ router.post(
 );
 
 router.get('/:postId', postController.viewPost);
+router.patch('/:postId', authMiddleware.auth, postController.updatePost);
 
 module.exports = router;

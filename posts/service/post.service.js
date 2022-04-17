@@ -51,6 +51,17 @@ module.exports = {
             console.log(error);
         }
     },
+    updatePost: async (postId, content) => {
+        try {
+            return Post.findOne({ where: { postId } }).then((post) => {
+                if (post) {
+                    post.update({ content });
+                }
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    },
     followerList: async (userId) => {
         try {
             return Follower.findAll({ where: { userId } });
