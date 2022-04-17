@@ -4,7 +4,7 @@ module.exports = {
     postComment: async (req, res) => {
         // const { userId } = res.locals.user;
         const { postId } = req.params;
-        const userId = '3d5ae106-1c0b-4ea0-8df1-0fb7229c07c0';
+        const userId = 'dcafc73d-07c6-4df3-9472-2608c30c3f6d';
         const { content } = req.body;
 
         try {

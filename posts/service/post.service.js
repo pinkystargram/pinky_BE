@@ -19,39 +19,20 @@ module.exports = {
             console.log(error);
         }
     },
-    postUserList: async () => {
-        try {
-            return Post.findAll({
-                include: [
-                    {
-                        model: User,
-                        as: 'user',
-                        attributes: ['nickname'],
-                    },
-                ],
-            });
-        } catch (error) {
-            console.log(error);
-        }
-    },
     postList: async () => {
         try {
             return Post.findAll({
-                include: [{ model: Comment, as: 'Comments', separate: true }],
-            });
-        } catch (error) {
-            console.log(error);
-        }
-    },
-    postList2: async () => {
-        try {
-            return Post.findAll({
-                include: [{ model: Comment, as: 'Comments', separate: true }],
                 include: [
                     {
-                        model: User,
-                        as: 'user',
-                        attributes: ['nickname'],
+                        model: Comment,
+                        as: 'Comments',
+                        include: [
+                            {
+                                model: User,
+                                as: 'user',
+                                attributes: ['nickname'],
+                            },
+                        ],
                     },
                 ],
             });
