@@ -79,12 +79,40 @@ module.exports = {
         }
     },
     viewPost: async (req, res) => {
-        const userId = '3d5ae106-1c0b-4ea0-8df1-0fb7229c07c0';
-        console.log('find', await postService.findPost(userId));
+        const { postId } = req.params;
+        const userId = res.locals.userId;
+
         try {
-            const data = await postService.findPost(userId);
-            console.log(data);
-            res.status(200).json(data);
+            const data = await postService.findPost(postId);
+            const commentList = [];
+            for (let i = 0; i < data.Comments.length; i++) {
+                const commentId = data.Comments[i].commentId
+                const userId = data.Comments[i].userId
+                const nickname = data.Comments[i].user.nickname
+                const content = data.Comments[i].content
+                const createdAt = data.Comments[i].createdAt
+                const updatedAt = data.Comments[i].updatedAt
+                const profileImageUrl = data.Comments[i].user.profileImageUrl
+                commentList.push({commentId, userId, nickname, content, createdAt, updatedAt, profileImageUrl});
+            }
+
+            res.status(200).json({
+                result: true,
+                data: {
+                    postId: data.postId,
+                    userId: data.userId,
+                    nickname: data.user.nickname,
+                    content: data.content,
+                    imageUrl: data.imageUrl,
+                    likeCount: data.Likes.length,
+                    location: data.location,
+                    createdAt: data.createdAt,
+                    updatedAt: data.updatedAt,
+                    commentList: commentList,
+                    likeList: data.Likes,
+                    bookmarkList: data.Bookmarks
+                }
+            });
         } catch (error) {
             console.log(error);
             res.status(400).json({
