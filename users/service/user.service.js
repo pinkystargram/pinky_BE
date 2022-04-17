@@ -1,4 +1,4 @@
-const { User, Post } = require('../../models');
+const { User, Post, Comment, Like } = require('../../models');
 
 module.exports = {
     /**
@@ -53,7 +53,26 @@ module.exports = {
         try {
             return User.findAll({
                 where: { userId },
-                include: [{ model: Post, as: 'Posts', foreignKey: 'userId' }],
+                include: [
+                    {
+                        model: Post,
+                        as: 'Posts',
+                        foreignKey: 'userId',
+                        include: [
+                            {
+                                model: Comment,
+                                as: 'Comments',
+                                foreignKey: 'postId',
+                            },
+                            {
+                                model: Like,
+                                as: 'Likes',
+                                foreignKey: 'postId',
+                            },
+                        ],
+                    },
+                ],
+                require: true,
             });
         } catch (error) {
             console.log(error);
