@@ -1,8 +1,7 @@
 const Sequelize = require('sequelize');
 const { UUIDV4 } = require('sequelize');
-
 module.exports = function (sequelize, DataTypes) {
-    const Bookmark = sequelize.define(
+    return sequelize.define(
         'Bookmark',
         {
             bookmarkId: {
@@ -14,7 +13,6 @@ module.exports = function (sequelize, DataTypes) {
             postId: {
                 type: DataTypes.STRING(255),
                 allowNull: false,
-                primaryKey: true,
                 references: {
                     model: 'Post',
                     key: 'postId',
@@ -23,7 +21,6 @@ module.exports = function (sequelize, DataTypes) {
             userId: {
                 type: DataTypes.STRING(255),
                 allowNull: false,
-                primaryKey: true,
                 references: {
                     model: 'User',
                     key: 'userId',
@@ -39,28 +36,19 @@ module.exports = function (sequelize, DataTypes) {
                     name: 'PRIMARY',
                     unique: true,
                     using: 'BTREE',
-                    fields: [
-                        { name: 'bookmarkId' },
-                        { name: 'postId' },
-                        { name: 'userId' },
-                    ],
-                },
-                {
-                    name: 'FK_Post_TO_Bookmark_1',
-                    using: 'BTREE',
-                    fields: [{ name: 'postId' }],
+                    fields: [{ name: 'bookmarkId' }],
                 },
                 {
                     name: 'FK_User_TO_Bookmark_1',
                     using: 'BTREE',
                     fields: [{ name: 'userId' }],
                 },
+                {
+                    name: 'FK_Post_TO_Bookmark_1',
+                    using: 'BTREE',
+                    fields: [{ name: 'postId' }],
+                },
             ],
         }
     );
-    Bookmark.assoiate = (models) => {
-        Bookmark.belongsTo(models.Post, { as: 'post', foreignKey: 'postId' });
-        Bookmark.belongsTo(models.User, { as: 'user', foreignKey: 'userId' });
-    };
-    return Bookmark;
 };

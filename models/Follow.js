@@ -1,18 +1,18 @@
 const Sequelize = require('sequelize');
 const { UUIDV4 } = require('sequelize');
 module.exports = function (sequelize, DataTypes) {
-    const Follow = sequelize.define(
+    return sequelize.define(
         'Follow',
         {
             followId: {
                 type: DataTypes.STRING(255),
+                defaultValue: UUIDV4,
                 allowNull: false,
                 primaryKey: true,
             },
             userId: {
                 type: DataTypes.STRING(255),
                 allowNull: false,
-                primaryKey: true,
                 references: {
                     model: 'User',
                     key: 'userId',
@@ -28,7 +28,7 @@ module.exports = function (sequelize, DataTypes) {
                     name: 'PRIMARY',
                     unique: true,
                     using: 'BTREE',
-                    fields: [{ name: 'followId' }, { name: 'userId' }],
+                    fields: [{ name: 'followId' }],
                 },
                 {
                     name: 'FK_User_TO_Follow_1',
@@ -38,8 +38,4 @@ module.exports = function (sequelize, DataTypes) {
             ],
         }
     );
-    Follow.assoiate = (models) => {
-        Follow.belongsTo(models.User, { as: 'user', foreignKey: 'userId' });
-    };
-    return Follow;
 };

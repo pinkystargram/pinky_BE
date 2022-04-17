@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const { UUIDV4 } = require('sequelize');
 module.exports = function (sequelize, DataTypes) {
-    const Like = sequelize.define(
+    return sequelize.define(
         'Like',
         {
             likeId: {
@@ -13,7 +13,6 @@ module.exports = function (sequelize, DataTypes) {
             postId: {
                 type: DataTypes.STRING(255),
                 allowNull: false,
-                primaryKey: true,
                 references: {
                     model: 'Post',
                     key: 'postId',
@@ -22,7 +21,6 @@ module.exports = function (sequelize, DataTypes) {
             userId: {
                 type: DataTypes.STRING(255),
                 allowNull: false,
-                primaryKey: true,
                 references: {
                     model: 'User',
                     key: 'userId',
@@ -38,28 +36,19 @@ module.exports = function (sequelize, DataTypes) {
                     name: 'PRIMARY',
                     unique: true,
                     using: 'BTREE',
-                    fields: [
-                        { name: 'likeId' },
-                        { name: 'postId' },
-                        { name: 'userId' },
-                    ],
-                },
-                {
-                    name: 'FK_Post_TO_Like_1',
-                    using: 'BTREE',
-                    fields: [{ name: 'postId' }],
+                    fields: [{ name: 'likeId' }],
                 },
                 {
                     name: 'FK_User_TO_Like_1',
                     using: 'BTREE',
                     fields: [{ name: 'userId' }],
                 },
+                {
+                    name: 'FK_Post_TO_Like_1',
+                    using: 'BTREE',
+                    fields: [{ name: 'postId' }],
+                },
             ],
         }
     );
-    Like.assoiate = (models) => {
-        Like.belongsTo(models.User, { as: 'user', foreignKey: 'userId' });
-        Like.belongsTo(models.Post, { as: 'post', foreignKey: 'postId' });
-    };
-    return Like;
 };
