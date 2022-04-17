@@ -69,10 +69,4 @@ module.exports = {
 
         res.send({ result: true, email, nickname });
     },
-    getMypage: async (req, res) => {
-        const { userId } = req.params;
-        const test = await userService.getAllByUserId(userId);
-        console.log(test);
-        res.send({ result: true, test });
-    },
 };
