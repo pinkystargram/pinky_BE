@@ -5,13 +5,13 @@ module.exports = function (sequelize, DataTypes) {
         {
             followerId: {
                 type: DataTypes.STRING(255),
+                defaultValue: UUIDV4,
                 allowNull: false,
                 primaryKey: true,
             },
             userId: {
                 type: DataTypes.STRING(255),
                 allowNull: false,
-                primaryKey: true,
                 references: {
                     model: 'User',
                     key: 'userId',
@@ -27,7 +27,7 @@ module.exports = function (sequelize, DataTypes) {
                     name: 'PRIMARY',
                     unique: true,
                     using: 'BTREE',
-                    fields: [{ name: 'followerId' }, { name: 'userId' }],
+                    fields: [{ name: 'followerId' }],
                 },
                 {
                     name: 'FK_User_TO_Follower_1',

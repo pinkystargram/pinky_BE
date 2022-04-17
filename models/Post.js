@@ -11,7 +11,6 @@ module.exports = function (sequelize, DataTypes) {
             userId: {
                 type: DataTypes.STRING(255),
                 allowNull: false,
-                primaryKey: true,
                 references: {
                     model: 'User',
                     key: 'userId',
@@ -27,7 +26,7 @@ module.exports = function (sequelize, DataTypes) {
             },
             location: {
                 type: DataTypes.STRING(200),
-                allowNull: true,
+                allowNull: false,
             },
         },
         {
@@ -39,7 +38,7 @@ module.exports = function (sequelize, DataTypes) {
                     name: 'PRIMARY',
                     unique: true,
                     using: 'BTREE',
-                    fields: [{ name: 'postId' }, { name: 'userId' }],
+                    fields: [{ name: 'postId' }],
                 },
                 {
                     name: 'FK_User_TO_Post_1',
