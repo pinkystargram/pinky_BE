@@ -5,7 +5,12 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const morgan = require('morgan');
 
-app.use(cors());
+app.use(
+    cors({
+        origin: ['http://localhost:3000'],
+        credentials: true,
+    })
+);
 app.use(morgan('dev'));
 
 const swaggerUi = require('swagger-ui-express');
