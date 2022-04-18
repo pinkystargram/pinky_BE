@@ -5,24 +5,20 @@ module.exports = {
     auth: async (req, res, next) => {
         try {
             if (!req.headers.authorization)
-                return res
-                    .status(401)
-                    .send({
-                        result: false,
-                        message: '로그인 후 사용하세요',
-                        reason: '헤더에 토큰이 없어요',
-                    });
+                return res.status(401).send({
+                    result: false,
+                    message: '로그인 후 사용하세요',
+                    reason: '헤더에 토큰이 없어요',
+                });
             const { authorization } = req.headers;
 
             const [tokenType, tokenValue] = authorization.split(' ');
             if (tokenType !== 'Bearer')
-                return res
-                    .status(401)
-                    .send({
-                        result: false,
-                        message: '로그인 후 사용하세요',
-                        reason: '토큰이 Bearer가 아니에요',
-                    });
+                return res.status(401).send({
+                    result: false,
+                    message: '로그인 후 사용하세요',
+                    reason: '토큰이 Bearer가 아니에요',
+                });
 
             const authedToken = jwt.verify(tokenValue, process.env.ACCESSKEY);
 
@@ -59,7 +55,7 @@ module.exports = {
                     const newToken = jwt.sign(payload, process.env.ACCESSKEY, {
                         expiresIn: process.env.ATOKENEXPIRE,
                     });
-                    res.send({
+                    res.status(401).send({
                         result: true,
                         atoken: newToken,
                         email: reUser.email,
