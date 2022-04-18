@@ -67,9 +67,9 @@ module.exports = {
             console.log(error);
         }
     },
-    updatePost: async (postId, content) => {
+    updatePost: async (postId, userId, content) => {
         try {
-            return Post.findOne({ where: { postId } }).then((post) => {
+            return Post.findOne({ where: { postId, userId } }).then((post) => {
                 if (post) {
                     post.update({ content });
                 }

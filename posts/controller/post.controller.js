@@ -210,7 +210,7 @@ module.exports = {
         const { postId } = req.params;
         const userId = res.locals.userId;
         try {
-            await postService.updatePost(postId, content);
+            await postService.updatePost(postId, userId, content);
 
             const postList = await postService.postList();
 
