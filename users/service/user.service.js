@@ -1,6 +1,6 @@
 const { User, Post, Comment, Like, Follow } = require('../../models');
 const sequelize = require('sequelize');
-const { followList } = require('../../posts/service/post.service');
+const Op = sequelize.Op;
 
 module.exports = {
     /**
@@ -120,7 +120,7 @@ module.exports = {
     },
     unFollow: async (targetId, userId) => {
         try {
-            await Follow.delete({ where: { targetId, userId } });
+            await Follow.destroy({ where: { targetId, userId } });
             await User.update(
                 { followCount: sequelize.literal('followCount-1') },
                 { where: { userId } }
@@ -184,6 +184,39 @@ module.exports = {
                 delete result.dataValues.target_Follows;
                 return result;
             });
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    test: async (userId) => {
+        try {
+            let arr = [];
+            let arr2 = [];
+
+            const follow = await Follow.findAll({
+                where: { userId },
+            }).then((result) => {
+                result.forEach((item) => {
+                    arr.push(item.targetId);
+                });
+                return arr;
+            });
+            console.log(arr);
+
+            const follower = await Follow.findAll({
+                where: { userId: { [Op.in]: arr } },
+            }).then((result) => {
+                result.forEach((item) => {
+                    arr2.push(item.targetId);
+                });
+            });
+            console.log(arr2);
+
+            // 유저ID가 팔로우한 타겟아이디 !== arr2
+            const data = await User.findAll({});
+            console.log(data);
+
+            return data;
         } catch (error) {
             console.log(error);
         }
