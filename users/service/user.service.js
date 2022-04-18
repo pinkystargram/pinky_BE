@@ -193,7 +193,7 @@ module.exports = {
             let arr = [];
             let arr2 = [];
 
-            const follow = await Follow.findAll({
+            await Follow.findAll({
                 where: { userId },
             }).then((result) => {
                 result.forEach((item) => {
@@ -201,22 +201,35 @@ module.exports = {
                 });
                 return arr;
             });
-            console.log(arr);
 
-            const follower = await Follow.findAll({
+            await Follow.findAll({
                 where: { userId: { [Op.in]: arr } },
             }).then((result) => {
                 result.forEach((item) => {
                     arr2.push(item.targetId);
                 });
             });
-            console.log(arr2);
 
-            // 유저ID가 팔로우한 타겟아이디 !== arr2
-            const data = await User.findAll({});
-            console.log(data);
+            arr2 = arr2.filter((x) => !arr.includes(x));
 
-            return data;
+            return await User.findAll({
+                where: { userId: { [Op.in]: arr2 } },
+                attributes: [
+                    'nickname',
+                    'profileImageUrl',
+                    'userId',
+                    [sequelize.literal('target_Follows.userId'), 'followId'],
+                ],
+                include: [
+                    {
+                        model: Follow,
+                        as: 'target_Follows',
+                        foreignKey: 'targetId',
+                        where: { userId: { [Op.in]: arr } },
+                        attributes: [],
+                    },
+                ],
+            });
         } catch (error) {
             console.log(error);
         }
