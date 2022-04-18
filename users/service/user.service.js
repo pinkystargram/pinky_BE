@@ -1,5 +1,6 @@
 const { User, Post, Comment, Like, Follow } = require('../../models');
 const sequelize = require('sequelize');
+const { followList } = require('../../posts/service/post.service');
 
 module.exports = {
     /**
@@ -59,43 +60,28 @@ module.exports = {
     /**
      *
      * @param {*} userId
-     * @returns { User Model + Post Model + Comment Model + Like Model}
-     * @event userId가 작성한 게시글(+댓글,좋아요)을 반환
+     * @returns Post Model (Comment + Like)
+     * @event userId가 작성한 글들 반환
      */
     getAllByUserId: (userId) => {
         try {
-            return User.findAll({
+            return Post.findAll({
                 where: { userId },
-                attributes: {
-                    exclude: ['password', 'email', 'createdAt', 'updatedAt'],
-                },
+                attributes: { exclude: ['userId', 'createdAt', 'updatedAt'] },
                 include: [
                     {
-                        model: Post,
-                        as: 'Posts',
-                        foreignKey: 'userId',
-                        attributes: {
-                            exclude: ['userId', 'createdAt', 'updatedAt'],
-                        },
-                        include: [
-                            {
-                                model: Comment,
-                                as: 'Comments',
-                                foreignKey: 'postId',
-                                attributes: {
-                                    exclude: ['postId', 'updatedAt'],
-                                },
-                            },
-                            {
-                                model: Like,
-                                as: 'Likes',
-                                foreignKey: 'postId',
-                                attibutes: ['userId'],
-                            },
-                        ],
+                        model: Comment,
+                        as: 'Comments',
+                        foreignKey: 'postId',
+                        attributes: { exclude: ['postId', 'updatedAt'] },
+                    },
+                    {
+                        model: Like,
+                        as: 'Likes',
+                        foreignKey: 'postId',
+                        attributes: ['userId'],
                     },
                 ],
-                require: true,
             });
         } catch (error) {
             console.log(error);
@@ -121,6 +107,61 @@ module.exports = {
                 { where: { userId: targetId } }
             );
             return;
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    getUserByUserId: async (userId) => {
+        try {
+            return User.findOne({
+                where: { userId },
+                attributes: {
+                    include: [
+                        [
+                            sequelize.literal(
+                                `(select count(*) from Post where userId = '${userId}')`
+                            ),
+                            'postCount',
+                        ],
+                    ],
+                    exclude: [
+                        'userId',
+                        'email',
+                        'password',
+                        'createdAt',
+                        'updatedAt',
+                    ],
+                },
+                include: [
+                    {
+                        model: Follow,
+                        as: 'Follows',
+                        foreignKey: 'userId',
+                        attributes: ['targetId'],
+                    },
+                    {
+                        model: Follow,
+                        as: 'target_Follows',
+                        foreignKey: 'targetId',
+                        attributes: ['userId'],
+                    },
+                ],
+            }).then((result) => {
+                result.dataValues.followId = [];
+                result.dataValues.followerId = [];
+
+                result.Follows.forEach((item) => {
+                    result.dataValues.followId.push(item.targetId);
+                });
+
+                result.target_Follows.forEach((item) => {
+                    result.dataValues.followerId.push(item.userId);
+                });
+
+                delete result.dataValues.Follows;
+                delete result.dataValues.target_Follows;
+                return result;
+            });
         } catch (error) {
             console.log(error);
         }
