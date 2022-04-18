@@ -7,7 +7,10 @@ const morgan = require('morgan');
 
 app.use(
     cors({
-        origin: ['http://localhost:3000'],
+        origin: [
+            'http://localhost:3000',
+            'http://haewonreactweek3.s3-website.ap-northeast-2.amazonaws.com/',
+        ],
         credentials: true,
     })
 );
