@@ -21,11 +21,21 @@ const fileFilter = (req, file, callback) => {
     const fileType = typeArray[1]; // 이미지 확장자 추출
 
     //이미지 확장자 구분 검사
-    if (fileType === 'jpg' || fileType === 'jpeg' || fileType === 'png' || fileType === 'webp') {
+    if (
+        fileType === 'jpg' ||
+        fileType === 'jpeg' ||
+        fileType === 'png' ||
+        fileType === 'gif' ||
+        fileType === 'svg' ||
+        fileType === 'bmp' ||
+        fileType === 'webp' ||
+        fileType === 'heic' ||
+        fileType === 'heif'
+    ) {
         callback(null, true);
     } else {
         return callback(
-            { message: 'jpg, jpeg, png, webp 파일만 업로드가 가능합니다.' },
+            { message: '지원되는 이미지파일 형식이 아닙니다.' },
             false
         );
     }

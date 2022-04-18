@@ -11,8 +11,8 @@ router.get('/', postController.viewPostList);
 router.post(
     '/',
     authMiddleware.auth,
-    postValidation,
     upload.single('image'),
+    postValidation,
     postController.post
 );
 

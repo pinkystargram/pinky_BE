@@ -3,6 +3,12 @@ const postService = require('../service/post.service');
 module.exports = {
     post: async (req, res) => {
         const { content, location } = req.body;
+        if (!req.file) {
+            return res.status(400).json({
+                result: false,
+                message: '이미지를 등록해주세요.',
+            });
+        }
         const image = req.file.location;
         const userId = res.locals.userId;
         try {

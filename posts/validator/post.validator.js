@@ -11,21 +11,14 @@ const error = (req, res, next) => {
 };
 
 const postValidation = [
-    body('image')
-        .trim()
-        .isLength({ min: 5 })
-        .withMessage('아이디는 최소 5글자 이상이어야 합니다')
-        .isEmail()
-        .withMessage('아이디는 이메일 형식이어야 합니다'),
     body('content')
-        .trim()
-        .isLength({ min: 5 })
-        .withMessage('비밀번호는 최소 5글자 이상이어야 합니다')
-        .isAlphanumeric()
-        .withMessage('비밀번호는 영문자와 숫자만 사용가능합니다'),
+        .notEmpty()
+        .withMessage('내용을 입력해주세요')
+        .isLength({ max: 200 })
+        .withMessage('내용은 200자 이상 작성할 수 없습니다.'),
     body('location')
-        .isLength({ min: 3 })
-        .withMessage('닉네임은 최소 3글자 이상이어야 합니다'),
+        .isLength({ max: 100 })
+        .withMessage('주소는 100자 이상 작성할 수 없습니다.'),
     error,
 ];
 
