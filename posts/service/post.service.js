@@ -66,6 +66,10 @@ module.exports = {
                         attributes: ['userId'],
                     },
                 ],
+                order: [
+                    ['createdAt', 'DESC'],
+                    [{ model: Comment, as: 'Comments' }, 'createdAt', 'DESC'],
+                ],
             });
         } catch (error) {
             console.log(error);
@@ -119,6 +123,10 @@ module.exports = {
                         attributes: ['userId'],
                     },
                 ],
+                order: [
+                    ['createdAt', 'DESC'],
+                    [{ model: Comment, as: 'Comments' }, 'createdAt', 'DESC'],
+                ],
             });
         } catch (error) {
             console.log(error);
@@ -148,6 +156,10 @@ module.exports = {
                         as: 'Bookmarks',
                         attributes: ['userId'],
                     },
+                ],
+                order: [
+                    ['createdAt', 'DESC'],
+                    [{ model: Comment, as: 'Comments' }, 'createdAt', 'DESC'],
                 ],
             });
         } catch (error) {
