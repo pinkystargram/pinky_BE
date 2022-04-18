@@ -5,8 +5,7 @@ const authMiddleware = require('../middlewares/auth.middleware');
 
 const postController = require('./controller/post.controller');
 
-router.get('/', postController.viewPostList);
-router.get('/test', postController.viewPostList2);
+router.get('/', authMiddleware.auth, postController.viewPostList);
 
 router.post(
     '/',
@@ -16,5 +15,7 @@ router.post(
 );
 
 router.get('/:postId', postController.viewPost);
+
+router.delete('/:postId', authMiddleware.auth, postController.deletePost);
 
 module.exports = router;

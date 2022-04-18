@@ -59,9 +59,8 @@ module.exports = {
             });
         }
     },
-    viewPostList: async (req, res) => {
-        // const { userId } = res.locals.user;
-        const userId = '24ad089c-6336-46dc-9414-86604c048ac2';
+    viewPostListSample: async (req, res) => {
+        const { userId } = res.locals;
 
         try {
             const postList = await postService.postList();
@@ -74,7 +73,6 @@ module.exports = {
 
                 const comments = i.Comments;
                 const commentCount = comments.length;
-
                 const { nickname } = i.user;
                 const {
                     postId,
@@ -91,10 +89,10 @@ module.exports = {
                     const {
                         commentId,
                         userId,
-                        postId,
                         content,
                         createdAt,
                         updatedAt,
+                        profileImageUrl,
                     } = j;
                     const { nickname } = j.user;
                     comment.push({
@@ -104,6 +102,7 @@ module.exports = {
                         content,
                         createdAt,
                         updatedAt,
+                        profileImageUrl,
                     });
                 }
                 data.push({
@@ -117,7 +116,7 @@ module.exports = {
                     likeCount,
                     createdAt,
                     updatedAt,
-                    comment,
+                    commentList: comment,
                     Likes,
                     Bookmarks,
                 });
@@ -130,21 +129,232 @@ module.exports = {
             console.log(error);
             res.status(400).json({
                 result: false,
-                message: '전체 게시글 조회 중 오류가 발생하였습니다.',
+                message: '샘플 전체 게시글 조회 중 오류가 발생하였습니다.',
             });
         }
     },
-    viewPostList2: async (req, res) => {
-        const userId = '2e600ecf-d1ee-41ef-8679-b2d01c7d3c13';
+    viewPostList: async (req, res) => {
+        const { userId } = res.locals;
 
         try {
             const followList = await postService.followList(userId);
-            res.status(201).json({ result: true, followList });
+            const confirmFollow = followList.length;
+            let data = [];
+            if (confirmFollow !== 0) {
+                for (k of followList) {
+                    const { targetId } = k;
+                    const followPostList = await postService.followPostList(
+                        targetId
+                    );
+                    for (i of followPostList) {
+                        const likes = i.Likes;
+                        const likeCount = likes.length;
+
+                        const comments = i.Comments;
+                        const commentCount = comments.length;
+
+                        const { nickname } = i.user;
+                        const {
+                            postId,
+                            userId,
+                            content,
+                            imageUrl,
+                            location,
+                            createdAt,
+                            updatedAt,
+                        } = i;
+                        let comment = [];
+                        const { Comments, Likes, Bookmarks } = i;
+                        for (j of Comments) {
+                            const {
+                                commentId,
+                                userId,
+                                content,
+                                createdAt,
+                                updatedAt,
+                                profileImageUrl,
+                            } = j;
+                            const { nickname } = j.user;
+                            comment.push({
+                                commentId,
+                                userId,
+                                nickname,
+                                content,
+                                createdAt,
+                                updatedAt,
+                                profileImageUrl,
+                            });
+                        }
+                        data.push({
+                            postId,
+                            userId,
+                            nickname,
+                            content,
+                            imageUrl,
+                            location,
+                            commentCount,
+                            likeCount,
+                            createdAt,
+                            updatedAt,
+                            commentList: comment,
+                            Likes,
+                            Bookmarks,
+                        });
+                    }
+                }
+                for (k of followList) {
+                    const { targetId } = k;
+                    const nonFollowerPostList =
+                        await postService.nonFollowerPostList(targetId);
+                    for (i of nonFollowerPostList) {
+                        const likes = i.Likes;
+                        const likeCount = likes.length;
+
+                        const comments = i.Comments;
+                        const commentCount = comments.length;
+
+                        const { nickname } = i.user;
+                        const {
+                            postId,
+                            userId,
+                            content,
+                            imageUrl,
+                            location,
+                            createdAt,
+                            updatedAt,
+                        } = i;
+                        let comment = [];
+                        const { Comments, Likes, Bookmarks } = i;
+                        for (j of Comments) {
+                            const {
+                                commentId,
+                                userId,
+                                content,
+                                createdAt,
+                                updatedAt,
+                                profileImageUrl,
+                            } = j;
+                            const { nickname } = j.user;
+                            comment.push({
+                                commentId,
+                                userId,
+                                nickname,
+                                content,
+                                createdAt,
+                                updatedAt,
+                                profileImageUrl,
+                            });
+                        }
+                        data.push({
+                            postId,
+                            userId,
+                            nickname,
+                            content,
+                            imageUrl,
+                            location,
+                            commentCount,
+                            likeCount,
+                            createdAt,
+                            updatedAt,
+                            commentList: comment,
+                            Likes,
+                            Bookmarks,
+                        });
+                    }
+                }
+                return res.status(201).json({ result: true, data });
+            } else {
+                try {
+                    const postList = await postService.postList();
+
+                    let data = [];
+
+                    for (i of postList) {
+                        const likes = i.Likes;
+                        const likeCount = likes.length;
+
+                        const comments = i.Comments;
+                        const commentCount = comments.length;
+                        const { nickname } = i.user;
+                        const {
+                            postId,
+                            userId,
+                            content,
+                            imageUrl,
+                            location,
+                            createdAt,
+                            updatedAt,
+                        } = i;
+                        let comment = [];
+                        const { Comments, Likes, Bookmarks } = i;
+                        for (j of Comments) {
+                            const {
+                                commentId,
+                                userId,
+                                content,
+                                createdAt,
+                                updatedAt,
+                                profileImageUrl,
+                            } = j;
+                            const { nickname } = j.user;
+                            comment.push({
+                                commentId,
+                                userId,
+                                nickname,
+                                content,
+                                createdAt,
+                                updatedAt,
+                                profileImageUrl,
+                            });
+                        }
+                        data.push({
+                            postId,
+                            userId,
+                            nickname,
+                            content,
+                            imageUrl,
+                            location,
+                            commentCount,
+                            likeCount,
+                            createdAt,
+                            updatedAt,
+                            commentList: comment,
+                            Likes,
+                            Bookmarks,
+                        });
+                    }
+                    res.status(201).json({
+                        result: true,
+                        data,
+                    });
+                } catch (error) {
+                    console.log(error);
+                    res.status(400).json({
+                        result: false,
+                        message:
+                            '팔로우가 없는 회원의 전체 게시글 조회 중 오류가 발생하였습니다.',
+                    });
+                }
+            }
         } catch (error) {
             console.log(error);
             res.status(400).json({
                 result: false,
-                message: '팔로우 게시글 조회 중 오류가 발생하였습니다.',
+                message: '전체 게시글 조회 중 오류가 발생하였습니다.',
+            });
+        }
+    },
+    deletePost: async (req, res) => {
+        try {
+            const { userId } = res.locals;
+            const { postId } = req.params;
+            await postService.deletePost(postId, userId);
+            res.status(201).json({ result: true });
+        } catch (error) {
+            console.log(error);
+            res.status(400).json({
+                result: false,
+                message: '게시글 삭제 중 오류가 발생하였습니다.',
             });
         }
     },
