@@ -2,30 +2,33 @@ const commentService = require('../service/comment.service');
 
 module.exports = {
     postComment: async (req, res) => {
-        // const { userId } = res.locals.user;
+        const { userId } = res.locals;
         const { postId } = req.params;
-        const userId = '24ad089c-6336-46dc-9414-86604c048ac2';
         const { content } = req.body;
 
         try {
             await commentService.createComment(userId, postId, content);
+
+            let comment = await commentService.findComment(
+                userId,
+                postId,
+                content
+            );
+            const { commentId, createdAt, updatedAt } = comment;
+            const { nickname, profileImageUrl } = comment.user;
+
+            const commentList = {
+                commentId,
+                userId,
+                nickname,
+                content,
+                createdAt,
+                updatedAt,
+                profileImageUrl,
+            };
             res.status(201).json({
                 result: true,
-                data: [
-                    {
-                        commentList: [
-                            {
-                                commentId: '댓글id',
-                                userId: '',
-                                nickname: '',
-                                content: '',
-                                createdAt: '',
-                                updatedAt: '',
-                                profileImageUrl: '',
-                            },
-                        ],
-                    },
-                ],
+                data: { commentList },
             });
         } catch (error) {
             console.log(error);
@@ -35,18 +38,25 @@ module.exports = {
             });
         }
     },
-
-    listComment: async (req, res) => {
-        const { postId } = req.params;
-
+    eraseComment: async (req, res) => {
         try {
-            const a = await commentService.findComment(postId);
-            res.status(201).json({ a });
+            const { commentId } = req.params;
+            const { userId } = res.locals;
+
+            const confirmComment = await commentService.beforeDeleteComment(
+                commentId,
+                userId
+            );
+            if (confirmComment === null) {
+                throw new Error('삭제할 댓글이 없습니다.');
+            }
+            await commentService.deleteComment(commentId, userId);
+            res.status(201).json({ result: true });
         } catch (error) {
             console.log(error);
             res.status(400).json({
                 result: false,
-                message: '댓글 조회 중 오류가 발생하였습니다.',
+                message: '댓글 삭제 중 오류가 발생하였습니다.',
             });
         }
     },

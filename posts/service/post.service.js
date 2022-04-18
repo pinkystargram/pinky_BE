@@ -1,11 +1,4 @@
-const {
-    User,
-    Post,
-    Follower,
-    Comment,
-    Like,
-    Bookmark,
-} = require('../../models');
+const { User, Post, Follow, Comment, Like, Bookmark } = require('../../models');
 const { Op } = require('sequelize');
 
 module.exports = {
@@ -42,6 +35,13 @@ module.exports = {
             console.log(error);
         }
     },
+    deletePost: async (postId, userId) => {
+        try {
+            return Post.destroy({ where: { postId, userId } });
+        } catch (error) {
+            console.log(error);
+        }
+    },
     postList: async () => {
         try {
             return Post.findAll({
@@ -59,14 +59,19 @@ module.exports = {
                             },
                         ],
                     },
-                    { model: Like, as: 'Likes' },
-                    { model: Bookmark, as: 'Bookmarks' },
+                    { model: Like, as: 'Likes', attributes: ['userId'] },
+                    {
+                        model: Bookmark,
+                        as: 'Bookmarks',
+                        attributes: ['userId'],
+                    },
                 ],
             });
         } catch (error) {
             console.log(error);
         }
     },
+
     updatePost: async (postId, userId, content) => {
         try {
             return Post.findOne({ where: { postId, userId } }).then((post) => {
@@ -78,28 +83,72 @@ module.exports = {
             console.log(error);
         }
     },
-    followerList: async (userId) => {
+
+    followList: async (userId) => {
         try {
-            return Follower.findAll({ where: { userId } });
-        } catch (error) {
-            console.log(error);
-        }
-    },
-    followerPostList: async (userId) => {
-        try {
-            return Post.findAll({
-                include: [{ model: Comment, as: 'Comments' }],
+            return Follow.findAll({
                 where: { userId },
+                attributes: ['targetId'],
             });
         } catch (error) {
             console.log(error);
         }
     },
-    nonFollowerPostList: async (userId) => {
+    followPostList: async (targetId) => {
         try {
             return Post.findAll({
-                include: [{ model: User, attributes: ['nickname'] }],
-                where: { [Op.ne]: [{ userId }] },
+                where: { userId: targetId },
+                include: [
+                    { model: User, as: 'user', attributes: ['nickname'] },
+                    {
+                        model: Comment,
+                        as: 'Comments',
+
+                        include: [
+                            {
+                                model: User,
+                                as: 'user',
+                                attributes: ['nickname', 'profileImageUrl'],
+                            },
+                        ],
+                    },
+                    { model: Like, as: 'Likes', attributes: ['userId'] },
+                    {
+                        model: Bookmark,
+                        as: 'Bookmarks',
+                        attributes: ['userId'],
+                    },
+                ],
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    nonFollowerPostList: async (targetId) => {
+        try {
+            return Post.findAll({
+                where: { userId: { [Op.ne]: targetId } },
+                include: [
+                    { model: User, as: 'user', attributes: ['nickname'] },
+                    {
+                        model: Comment,
+                        as: 'Comments',
+
+                        include: [
+                            {
+                                model: User,
+                                as: 'user',
+                                attributes: ['nickname', 'profileImageUrl'],
+                            },
+                        ],
+                    },
+                    { model: Like, as: 'Likes', attributes: ['userId'] },
+                    {
+                        model: Bookmark,
+                        as: 'Bookmarks',
+                        attributes: ['userId'],
+                    },
+                ],
             });
         } catch (error) {
             console.log(error);
