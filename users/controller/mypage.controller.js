@@ -10,12 +10,6 @@ module.exports = {
             res.send({ result: false, error });
         }
     },
-    /**
-     * TODO:
-     * 팔로우 버튼 클릭시 실행될 함수
-     *
-     *
-     */
     follow: async (req, res) => {
         const followId = req.params.userId;
         const userId = res.locals.userId;
@@ -23,6 +17,16 @@ module.exports = {
         try {
             await userService.doFollow(followId, userId);
             res.send({ result: true });
+        } catch (error) {
+            console.log(error);
+            res.send({ result: false, error });
+        }
+    },
+    getUserInfo: async (req, res) => {
+        const userId = res.locals.userId;
+        try {
+            const data = await userService.getUserByUserId(userId);
+            res.send({ result: true, data });
         } catch (error) {
             console.log(error);
             res.send({ result: false, error });
