@@ -87,6 +87,13 @@ module.exports = {
             console.log(error);
         }
     },
+    chkFollow: async (targetId, userId) => {
+        try {
+            return Follow.findOne({ where: { targetId, userId } });
+        } catch (error) {
+            console.log(error);
+        }
+    },
     /**
      * TODO:
      * 1이 팔로우한 ID : select * from follow where userid : 1
@@ -111,7 +118,22 @@ module.exports = {
             console.log(error);
         }
     },
-    getUserByUserId: async (userId) => {
+    unFollow: async (targetId, userId) => {
+        try {
+            await Follow.delete({ where: { targetId, userId } });
+            await User.update(
+                { followCount: sequelize.literal('followCount-1') },
+                { where: { userId } }
+            );
+            await User.update(
+                { followerCount: sequelize.literal('followerCount-1') },
+                { where: { userId: targetId } }
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    getUserByUserId: (userId) => {
         try {
             return User.findOne({
                 where: { userId },

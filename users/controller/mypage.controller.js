@@ -11,11 +11,17 @@ module.exports = {
         }
     },
     follow: async (req, res) => {
-        const followId = req.params.userId;
+        const targetId = req.params.userId;
         const userId = res.locals.userId;
 
         try {
-            await userService.doFollow(followId, userId);
+            const chk = userService.chkFollow(targetId, userId);
+            if (chk) {
+                await userService.unFollow(targetId, userId);
+            } else {
+                await userService.doFollow(targetId, userId);
+            }
+
             res.send({ result: true });
         } catch (error) {
             console.log(error);
