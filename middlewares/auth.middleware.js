@@ -7,14 +7,22 @@ module.exports = {
             if (!req.headers.authorization)
                 return res
                     .status(401)
-                    .send({ result: false, message: '로그인 후 사용하세요' });
+                    .send({
+                        result: false,
+                        message: '로그인 후 사용하세요',
+                        reason: '헤더에 토큰이 없어요',
+                    });
             const { authorization } = req.headers;
 
             const [tokenType, tokenValue] = authorization.split(' ');
             if (tokenType !== 'Bearer')
                 return res
                     .status(401)
-                    .send({ result: false, message: '로그인 후 사용하세요' });
+                    .send({
+                        result: false,
+                        message: '로그인 후 사용하세요',
+                        reason: '토큰이 Bearer가 아니에요',
+                    });
 
             const authedToken = jwt.verify(tokenValue, process.env.ACCESSKEY);
 
@@ -35,6 +43,7 @@ module.exports = {
                         return res.status(401).send({
                             result: false,
                             message: '로그인 후 사용하세요',
+                            reason: '리프레쉬 토큰이 Bearer가 아니에요',
                         });
                     const reAuthedToken = jwt.verify(
                         reTokenValue,
@@ -61,6 +70,7 @@ module.exports = {
                     res.status(401).send({
                         result: false,
                         message: '다시 로그인하셔야 합니다',
+                        reason: 'access토큰에 문제가 있네요(기한만료가 아닌 에러)',
                         error,
                     });
                 }
@@ -69,6 +79,7 @@ module.exports = {
                     res.status(401).send({
                         result: false,
                         message: '다시 로그인하셔야 합니다',
+                        reason: '리프레쉬 토큰까지 만료됐어요',
                         error,
                     });
                 } else {
@@ -76,6 +87,7 @@ module.exports = {
                     res.status(401).send({
                         result: false,
                         message: '다시 로그인하셔야 합니다',
+                        reason: '리프레쉬 토큰에 문제가 있네요(기한만료가 아닌 에러)',
                         error,
                     });
                 }
