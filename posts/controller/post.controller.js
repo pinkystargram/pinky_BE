@@ -4,7 +4,7 @@ module.exports = {
     post: async (req, res) => {
         const { content, location } = req.body;
         const image = req.file.location;
-        const userId = '3d5ae106-1c0b-4ea0-8df1-0fb7229c07c0';
+        const userId = res.locals.userId;
         try {
             await postService.createPost(userId, content, image, location);
 
