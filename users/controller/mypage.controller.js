@@ -15,7 +15,7 @@ module.exports = {
         const userId = res.locals.userId;
 
         try {
-            const chk = userService.chkFollow(targetId, userId);
+            const chk = await userService.chkFollow(targetId, userId);
             if (chk) {
                 await userService.unFollow(targetId, userId);
             } else {
@@ -32,6 +32,18 @@ module.exports = {
         const userId = res.locals.userId;
         try {
             const data = await userService.getUserByUserId(userId);
+            res.send({ result: true, data });
+        } catch (error) {
+            console.log(error);
+            res.send({ result: false, error });
+        }
+    },
+    // 내가 팔로우한 사람중에 내가 팔로우하지 않은 사람 찾기
+    getUsers: async (req, res) => {
+        const userId = res.locals.userId;
+
+        try {
+            const data = await userService.test(userId);
             res.send({ result: true, data });
         } catch (error) {
             console.log(error);
