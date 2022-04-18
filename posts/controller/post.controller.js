@@ -4,7 +4,7 @@ module.exports = {
     post: async (req, res) => {
         const { content, location } = req.body;
         const image = req.file.location;
-        const userId = res.locals.userId;
+        const userId = '3d5ae106-1c0b-4ea0-8df1-0fb7229c07c0';
         try {
             await postService.createPost(userId, content, image, location);
             res.status(201).json({
@@ -130,7 +130,21 @@ module.exports = {
             console.log(error);
             res.status(400).json({
                 result: false,
-                message: '게시글 조회 중 오류가 발생하였습니다.',
+                message: '전체 게시글 조회 중 오류가 발생하였습니다.',
+            });
+        }
+    },
+    viewPostList2: async (req, res) => {
+        const userId = '2e600ecf-d1ee-41ef-8679-b2d01c7d3c13';
+
+        try {
+            const followList = await postService.followList(userId);
+            res.status(201).json({ result: true, followList });
+        } catch (error) {
+            console.log(error);
+            res.status(400).json({
+                result: false,
+                message: '팔로우 게시글 조회 중 오류가 발생하였습니다.',
             });
         }
     },
