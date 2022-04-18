@@ -26,8 +26,10 @@ function initModels(sequelize) {
     User.hasMany(Bookmark, { as: 'Bookmarks', foreignKey: 'userId' });
     Comment.belongsTo(User, { as: 'user', foreignKey: 'userId' });
     User.hasMany(Comment, { as: 'Comments', foreignKey: 'userId' });
-    Follow.belongsTo(User, { as: 'user', foreignKey: ['userId', 'targetId'] });
+    Follow.belongsTo(User, { as: 'user', foreignKey: 'userId' });
     User.hasMany(Follow, { as: 'Follows', foreignKey: 'userId' });
+    Follow.belongsTo(User, { as: 'target', foreignKey: 'targetId' });
+    User.hasMany(Follow, { as: 'target_Follows', foreignKey: 'targetId' });
     Follower.belongsTo(User, { as: 'user', foreignKey: 'userId' });
     User.hasMany(Follower, { as: 'Followers', foreignKey: 'userId' });
     Like.belongsTo(User, { as: 'user', foreignKey: 'userId' });

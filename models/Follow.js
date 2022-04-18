@@ -46,7 +46,7 @@ module.exports = function (sequelize, DataTypes) {
                 {
                     name: 'Follow_FK',
                     using: 'BTREE',
-                    fields: [{ name: 'userId' }],
+                    fields: [{ name: 'targetId' }],
                 },
             ],
         }
