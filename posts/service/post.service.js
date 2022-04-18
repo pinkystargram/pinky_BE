@@ -98,10 +98,17 @@ module.exports = {
             console.log(error);
         }
     },
+    findUserList: async () => {
+        try {
+            return User.findAll({ attributes: ['userId'] });
+        } catch (error) {
+            console.log(error);
+        }
+    },
     followPostList: async (targetId) => {
         try {
             return Post.findAll({
-                where: { userId: targetId },
+                where: { [Op.or]: targetId },
                 include: [
                     { model: User, as: 'user', attributes: ['nickname'] },
                     {
@@ -135,7 +142,7 @@ module.exports = {
     nonFollowerPostList: async (targetId) => {
         try {
             return Post.findAll({
-                where: { userId: { [Op.ne]: targetId } },
+                where: { [Op.or]: targetId },
                 include: [
                     { model: User, as: 'user', attributes: ['nickname'] },
                     {

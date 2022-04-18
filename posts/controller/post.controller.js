@@ -210,128 +210,147 @@ module.exports = {
         try {
             const followList = await postService.followList(userId);
             const confirmFollow = followList.length;
+            let arrTargetId = [];
             let data = [];
             if (confirmFollow !== 0) {
-                for (k of followList) {
-                    const { targetId } = k;
-                    const followPostList = await postService.followPostList(
-                        targetId
-                    );
-                    for (i of followPostList) {
-                        const likes = i.Likes;
-                        const likeCount = likes.length;
+                for (x of followList) {
+                    const { targetId } = x;
+                    arrTargetId.push({ userId: targetId });
+                }
+                const followPostList = await postService.followPostList(
+                    arrTargetId
+                );
+                for (i of followPostList) {
+                    const likes = i.Likes;
+                    const likeCount = likes.length;
 
-                        const comments = i.Comments;
-                        const commentCount = comments.length;
+                    const comments = i.Comments;
+                    const commentCount = comments.length;
 
-                        const { nickname } = i.user;
+                    const { nickname } = i.user;
+                    const {
+                        postId,
+                        userId,
+                        content,
+                        imageUrl,
+                        location,
+                        createdAt,
+                        updatedAt,
+                    } = i;
+                    let comment = [];
+                    const { Comments, Likes, Bookmarks } = i;
+                    for (j of Comments) {
                         const {
-                            postId,
+                            commentId,
                             userId,
                             content,
-                            imageUrl,
-                            location,
                             createdAt,
                             updatedAt,
-                        } = i;
-                        let comment = [];
-                        const { Comments, Likes, Bookmarks } = i;
-                        for (j of Comments) {
-                            const {
-                                commentId,
-                                userId,
-                                content,
-                                createdAt,
-                                updatedAt,
-                                profileImageUrl,
-                            } = j;
-                            const { nickname } = j.user;
-                            comment.push({
-                                commentId,
-                                userId,
-                                nickname,
-                                content,
-                                createdAt,
-                                updatedAt,
-                                profileImageUrl,
-                            });
-                        }
-                        data.push({
-                            postId,
+                            profileImageUrl,
+                        } = j;
+                        const { nickname } = j.user;
+                        comment.push({
+                            commentId,
                             userId,
                             nickname,
                             content,
-                            imageUrl,
-                            location,
-                            commentCount,
-                            likeCount,
                             createdAt,
                             updatedAt,
-                            commentList: comment,
-                            Likes,
-                            Bookmarks,
+                            profileImageUrl,
                         });
+                    }
+                    data.push({
+                        postId,
+                        userId,
+                        nickname,
+                        content,
+                        imageUrl,
+                        location,
+                        commentCount,
+                        likeCount,
+                        createdAt,
+                        updatedAt,
+                        commentList: comment,
+                        Likes,
+                        Bookmarks,
+                    });
+                }
+                let nonFolTargetId = [];
+                let nonFolUserId = [];
+                let userIdList = [];
+                const findUserList = await postService.findUserList();
+                for (x of findUserList) {
+                    userIdList.push(x.userId);
+                }
+                for (x of arrTargetId) {
+                    nonFolUserId.push(x.userId);
+                }
+                for (let i = 0; i < userIdList.length; i++) {
+                    for (j of nonFolUserId) {
+                        if (userIdList[i] === j) {
+                            userIdList.splice(i, 1);
+                        }
                     }
                 }
-                for (k of followList) {
-                    const { targetId } = k;
-                    const nonFollowerPostList =
-                        await postService.nonFollowerPostList(targetId);
-                    for (i of nonFollowerPostList) {
-                        const likes = i.Likes;
-                        const likeCount = likes.length;
+                for (i of userIdList) {
+                    nonFolTargetId.push({ userId: i });
+                }
+                const nonFollowerPostList =
+                    await postService.nonFollowerPostList(nonFolTargetId);
+                for (i of nonFollowerPostList) {
+                    const likes = i.Likes;
+                    const likeCount = likes.length;
 
-                        const comments = i.Comments;
-                        const commentCount = comments.length;
+                    const comments = i.Comments;
+                    const commentCount = comments.length;
 
-                        const { nickname } = i.user;
+                    const { nickname } = i.user;
+                    const {
+                        postId,
+                        userId,
+                        content,
+                        imageUrl,
+                        location,
+                        createdAt,
+                        updatedAt,
+                    } = i;
+                    let comment = [];
+                    const { Comments, Likes, Bookmarks } = i;
+                    for (j of Comments) {
                         const {
-                            postId,
+                            commentId,
                             userId,
                             content,
-                            imageUrl,
-                            location,
                             createdAt,
                             updatedAt,
-                        } = i;
-                        let comment = [];
-                        const { Comments, Likes, Bookmarks } = i;
-                        for (j of Comments) {
-                            const {
-                                commentId,
-                                userId,
-                                content,
-                                createdAt,
-                                updatedAt,
-                                profileImageUrl,
-                            } = j;
-                            const { nickname } = j.user;
-                            comment.push({
-                                commentId,
-                                userId,
-                                nickname,
-                                content,
-                                createdAt,
-                                updatedAt,
-                                profileImageUrl,
-                            });
-                        }
-                        data.push({
-                            postId,
+                            profileImageUrl,
+                        } = j;
+                        const { nickname } = j.user;
+                        comment.push({
+                            commentId,
                             userId,
                             nickname,
                             content,
-                            imageUrl,
-                            location,
-                            commentCount,
-                            likeCount,
                             createdAt,
                             updatedAt,
-                            commentList: comment,
-                            Likes,
-                            Bookmarks,
+                            profileImageUrl,
                         });
                     }
+                    data.push({
+                        postId,
+                        userId,
+                        nickname,
+                        content,
+                        imageUrl,
+                        location,
+                        commentCount,
+                        likeCount,
+                        createdAt,
+                        updatedAt,
+                        commentList: comment,
+                        Likes,
+                        Bookmarks,
+                    });
                 }
                 return res.status(201).json({ result: true, data });
             } else {
