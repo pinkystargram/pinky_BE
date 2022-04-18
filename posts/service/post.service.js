@@ -9,11 +9,27 @@ module.exports = {
             console.log(error);
         }
     },
-    findPost: async (userId) => {
+    findPost: async (postId) => {
         try {
-            return User.findAll({
-                raw: true,
-                include: [{ model: Post, as: 'Posts', foreignKey: 'userId' }],
+            return Post.findOne({
+                include: [
+                    { model: User, as: 'user', attributes: ['nickname'] },
+                    {
+                        model: Comment,
+                        as: 'Comments',
+
+                        include: [
+                            {
+                                model: User,
+                                as: 'user',
+                                attributes: ['nickname', 'profileImageUrl'],
+                            },
+                        ],
+                    },
+                    { model: Like, as: 'Likes' },
+                    { model: Bookmark, as: 'Bookmarks' },
+                ],
+                where: { postId },
             });
         } catch (error) {
             console.log(error);
@@ -55,6 +71,19 @@ module.exports = {
             console.log(error);
         }
     },
+
+    updatePost: async (postId, userId, content) => {
+        try {
+            return Post.findOne({ where: { postId, userId } }).then((post) => {
+                if (post) {
+                    post.update({ content });
+                }
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
     followList: async (userId) => {
         try {
             return Follow.findAll({
