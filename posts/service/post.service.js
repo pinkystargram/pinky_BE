@@ -76,11 +76,11 @@ module.exports = {
         }
     },
 
-    updatePost: async (postId, userId, content) => {
+    updatePost: async (postId, userId, content, location) => {
         try {
             return Post.findOne({ where: { postId, userId } }).then((post) => {
                 if (post) {
-                    post.update({ content });
+                    post.update({ content, location });
                 }
             });
         } catch (error) {

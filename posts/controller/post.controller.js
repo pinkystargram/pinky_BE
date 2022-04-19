@@ -455,11 +455,11 @@ module.exports = {
         }
     },
     updatePost: async (req, res) => {
-        const { content } = req.body;
+        const { content, location } = req.body;
         const { postId } = req.params;
         const userId = res.locals.userId;
         try {
-            await postService.updatePost(postId, userId, content);
+            await postService.updatePost(postId, userId, content, location);
 
             const postList = await postService.postList();
 
