@@ -1,4 +1,5 @@
 const commentService = require('../service/comment.service');
+const postService = require('../../posts/service/post.service');
 
 module.exports = {
     postComment: async (req, res) => {
@@ -14,7 +15,9 @@ module.exports = {
                 postId,
                 content
             );
-            const { commentId, createdAt, updatedAt } = comment;
+            const { commentId, updatedAt } = comment;
+            let { createdAt } = comment;
+            createdAt = postService.timeForToday(createdAt);
             const { nickname, profileImageUrl } = comment.user;
 
             const commentList = {
