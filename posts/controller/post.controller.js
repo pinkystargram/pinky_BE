@@ -97,9 +97,10 @@ module.exports = {
                 const userId = data.Comments[i].userId;
                 const nickname = data.Comments[i].user.nickname;
                 const content = data.Comments[i].content;
-                const createdAt = data.Comments[i].createdAt;
+                const createdTime = data.Comments[i].createdAt;
                 const updatedAt = data.Comments[i].updatedAt;
                 const profileImageUrl = data.Comments[i].user.profileImageUrl;
+                const createdAt = postService.timeForToday(createdTime);
                 commentList.push({
                     commentId,
                     userId,
