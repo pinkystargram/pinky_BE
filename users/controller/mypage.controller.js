@@ -1,4 +1,5 @@
 const userService = require('../service/user.service');
+const profileMiddleware = require('../../middlewares/profileMulter');
 module.exports = {
     getMypage: async (req, res) => {
         const { userId } = req.params;
@@ -35,7 +36,7 @@ module.exports = {
         }
     },
     getUserInfo: async (req, res) => {
-        const userId = res.locals.userId;
+        const { userId } = req.params;
         try {
             const data = await userService.getUserByUserId(userId);
             res.send({ result: true, data });
@@ -50,6 +51,39 @@ module.exports = {
 
         try {
             const data = await userService.followrecommned(userId);
+            res.send({ result: true, data });
+        } catch (error) {
+            console.log(error);
+            res.send({ result: false, error });
+        }
+    },
+    modify: async (req, res) => {
+        const { userId } = res.locals;
+        const { nickname, bio } = req.body;
+        let profileImageUrl;
+        if (req.file) profileImageUrl = req.file.location;
+
+        try {
+            const User = await userService.chkByUserId(userId);
+            if (!User)
+                return res.send({
+                    result: false,
+                    message: '유저정보가 잘못되었습니다',
+                });
+            if (User.profileImageUrl) {
+                profileMiddleware.deleteProfile(User.profileImageUrl);
+            }
+            await userService.modify(userId, nickname, bio, profileImageUrl);
+            res.send({ result: true });
+        } catch (error) {
+            console.log(error);
+            res.send({ result: false, error });
+        }
+    },
+    getFollow: async (req, res) => {
+        const { userId } = req.params;
+        try {
+            const data = await userService.getFollow(userId);
             res.send({ result: true, data });
         } catch (error) {
             console.log(error);

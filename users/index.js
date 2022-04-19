@@ -5,14 +5,21 @@ const userController = require('./controller/user.controller');
 const mypageController = require('./controller/mypage.controller');
 const registerValidator = require('./validator/register.validator');
 const authMiddleware = require('../middlewares/auth.middleware');
+const profileMiddleware = require('../middlewares/profileMulter');
 
+router.get('/auth', authMiddleware.auth, userController.auth);
 router.post('/signup', registerValidator, userController.signup);
 router.post('/login', userController.login);
-router.get('/auth', authMiddleware.auth, userController.auth);
 
 router.get('/:userId/mypage', authMiddleware.auth, mypageController.getMypage);
-router.post('/:userId/follow', authMiddleware.auth, mypageController.follow);
-router.get('/info', authMiddleware.auth, mypageController.getUserInfo);
+router.get('/:userId/info', authMiddleware.auth, mypageController.getUserInfo);
 router.get('/recommend', authMiddleware.auth, mypageController.recommend);
+router.post('/:userId/follow', authMiddleware.auth, mypageController.follow);
+router.put(
+    '/info',
+    authMiddleware.auth,
+    profileMiddleware.uploadProfile.single('profileImgUrl'),
+    mypageController.modify
+);
 
 module.exports = router;

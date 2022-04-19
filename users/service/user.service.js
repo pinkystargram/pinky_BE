@@ -96,8 +96,6 @@ module.exports = {
     },
     /**
      * TODO:
-     * 1이 팔로우한 ID : select * from follow where userid : 1
-     * 1을 팔로우한 ID : select * from follow where followId : 1
      *
      * @param {*} followId
      * @param {*} userid
@@ -267,5 +265,31 @@ module.exports = {
         } catch (error) {
             console.log(error);
         }
+    },
+    modify: async (userId, nickname, bio, profileImageUrl) => {
+        await User.update(
+            {
+                bio,
+                nickname,
+                profileImageUrl,
+            },
+            {
+                where: { userId },
+            }
+        );
+        return;
+    },
+    getFollow: (userId) => {
+        return User.findAll({
+            include: [
+                {
+                    model: Follow,
+                    as: 'target_Follows',
+                    foreignKey: 'targetId',
+                    where: { userId },
+                },
+            ],
+            attributes: ['nickname', 'profileImageUrl', 'userId'],
+        });
     },
 };
