@@ -11,10 +11,11 @@ module.exports = {
             );
             if (confirmBookmark !== null) {
                 await bookmarkService.unMarkPost(postId, userId);
+                res.status(201).json({ result: true, bookmarkstate: false });
             } else {
                 await bookmarkService.MarkPost(postId, userId);
+                res.status(201).json({ result: true, bookmarkstate: true });
             }
-            res.status(201).json({ result: true });
         } catch (error) {
             console.log(error);
             res.status(400).json({

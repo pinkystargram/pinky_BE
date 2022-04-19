@@ -6,13 +6,12 @@ module.exports = {
             const { postId } = req.params;
             const { userId } = res.locals;
             const confirmLike = await likeService.findLike(postId, userId);
-            console.log(confirmLike);
             if (confirmLike !== null) {
                 await likeService.disLikePost(postId, userId);
-                return res.status(201).json({ result: true });
+                return res.status(201).json({ result: true, likestate: false });
             } else {
                 await likeService.likePost(postId, userId);
-                return res.status(201).json({ result: true });
+                return res.status(201).json({ result: true, likestate: true });
             }
         } catch (error) {
             console.log(error);
