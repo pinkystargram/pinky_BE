@@ -14,6 +14,12 @@ router.post('/login', userController.login);
 router.get('/:userId/mypage', authMiddleware.auth, mypageController.getMypage);
 router.get('/:userId/info', authMiddleware.auth, mypageController.getUserInfo);
 router.get('/recommend', authMiddleware.auth, mypageController.recommend);
+router.get('/:userId/follow', authMiddleware.auth, mypageController.getFollow);
+router.get(
+    '/:userId/follower',
+    authMiddleware.auth,
+    mypageController.getFollower
+);
 router.post('/:userId/follow', authMiddleware.auth, mypageController.follow);
 router.put(
     '/info',

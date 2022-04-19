@@ -90,4 +90,14 @@ module.exports = {
             res.send({ result: false, error });
         }
     },
+    getFollower: async (req, res) => {
+        const { userId } = req.params;
+        try {
+            const data = await userService.getFollower(userId);
+            res.send({ result: true, data });
+        } catch (error) {
+            console.log(error);
+            res.send({ result: false, error });
+        }
+    },
 };

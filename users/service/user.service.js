@@ -287,6 +287,21 @@ module.exports = {
                     as: 'target_Follows',
                     foreignKey: 'targetId',
                     where: { userId },
+                    attributes: [],
+                },
+            ],
+            attributes: ['nickname', 'profileImageUrl', 'userId'],
+        });
+    },
+    getFollower: (userId) => {
+        return User.findAll({
+            include: [
+                {
+                    model: Follow,
+                    as: 'Follows',
+                    foreignKey: 'userId',
+                    where: { targetId: userId },
+                    attributes: [],
                 },
             ],
             attributes: ['nickname', 'profileImageUrl', 'userId'],
