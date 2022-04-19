@@ -91,6 +91,7 @@ module.exports = {
 
         try {
             const data = await postService.findPost(postId);
+            const createdAt = postService.timeForToday(data.createdAt);
             const commentList = [];
             for (let i = 0; i < data.Comments.length; i++) {
                 const commentId = data.Comments[i].commentId;
@@ -122,7 +123,7 @@ module.exports = {
                     imageUrl: data.imageUrl,
                     likeCount: data.Likes.length,
                     location: data.location,
-                    createdAt: data.createdAt,
+                    createdAt: createdAt,
                     updatedAt: data.updatedAt,
                     commentList: commentList,
                     likeList: data.Likes,
