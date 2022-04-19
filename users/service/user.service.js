@@ -246,6 +246,11 @@ module.exports = {
                         where: { targetId: result[i].userId },
                     });
                     result[i].dataValues.count = count - 1;
+                    console.log(result[i].dataValues.followId);
+                    const id = await User.findOne({
+                        where: { userId: result[i].dataValues.followId },
+                    });
+                    result[i].dataValues.followNickname = id.nickname;
                 }
                 return result;
             });
