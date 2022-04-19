@@ -157,9 +157,10 @@ module.exports = {
                     content,
                     imageUrl,
                     location,
-                    createdAt,
                     updatedAt,
                 } = i;
+                let { createdAt } = i;
+                createdAt = postService.timeForToday(createdAt);
                 let comment = [];
                 const { Comments, Likes, Bookmarks } = i;
                 for (j of Comments) {
@@ -240,9 +241,10 @@ module.exports = {
                         content,
                         imageUrl,
                         location,
-                        createdAt,
                         updatedAt,
                     } = i;
+                    let { createdAt } = i;
+                    createdAt = postService.timeForToday(createdAt);
                     let comment = [];
                     const { Comments, Likes, Bookmarks } = i;
                     for (j of Comments) {
@@ -250,10 +252,11 @@ module.exports = {
                             commentId,
                             userId,
                             content,
-                            createdAt,
                             updatedAt,
                             profileImageUrl,
                         } = j;
+                        let { createdAt } = j;
+                        createdAt = postService.timeForToday(createdAt);
                         const { nickname } = j.user;
                         comment.push({
                             commentId,
@@ -317,9 +320,10 @@ module.exports = {
                         content,
                         imageUrl,
                         location,
-                        createdAt,
                         updatedAt,
                     } = i;
+                    let { createdAt } = i;
+                    createdAt = postService.timeForToday(createdAt);
                     let comment = [];
                     const { Comments, Likes, Bookmarks } = i;
                     for (j of Comments) {
@@ -327,10 +331,11 @@ module.exports = {
                             commentId,
                             userId,
                             content,
-                            createdAt,
                             updatedAt,
                             profileImageUrl,
                         } = j;
+                        let { createdAt } = j;
+                        createdAt = postService.timeForToday(createdAt);
                         const { nickname } = j.user;
                         comment.push({
                             commentId,
@@ -378,9 +383,10 @@ module.exports = {
                             content,
                             imageUrl,
                             location,
-                            createdAt,
                             updatedAt,
                         } = i;
+                        let { createdAt } = i;
+                        createdAt = postService.timeForToday(createdAt);
                         let comment = [];
                         const { Comments, Likes, Bookmarks } = i;
                         for (j of Comments) {
@@ -388,10 +394,11 @@ module.exports = {
                                 commentId,
                                 userId,
                                 content,
-                                createdAt,
                                 updatedAt,
                                 profileImageUrl,
                             } = j;
+                            let { createdAt } = j;
+                            createdAt = postService.timeForToday(createdAt);
                             const { nickname } = j.user;
                             comment.push({
                                 commentId,
