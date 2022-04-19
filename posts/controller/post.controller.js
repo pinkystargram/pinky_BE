@@ -141,6 +141,7 @@ module.exports = {
 
     viewPostList: async (req, res) => {
         const { userId } = res.locals;
+        const { page } = req.query;
 
         try {
             const followList = await postService.followList(userId);
@@ -325,7 +326,11 @@ module.exports = {
                         Bookmarks,
                     });
                 }
-                return res.status(201).json({ result: true, data });
+
+                // let p = page - 1;
+                // data1 = data[p];
+                data1 = data.slice(0, page);
+                return res.status(201).json({ result: true, data: data1 });
             } else {
                 try {
                     const postList = await postService.postList();
@@ -405,9 +410,13 @@ module.exports = {
                             Bookmarks,
                         });
                     }
+
+                    // let p = page - 1;
+                    // data1 = data[p];
+                    data1 = data.slice(0, page);
                     res.status(201).json({
                         result: true,
-                        data,
+                        data: data1,
                     });
                 } catch (error) {
                     console.log(error);
