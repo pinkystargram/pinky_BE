@@ -195,18 +195,12 @@ module.exports = {
 
                     let comment = [];
                     for (j of Comments) {
-                        const {
-                            commentId,
-                            userId,
-                            content,
-                            updatedAt,
-                            profileImageUrl,
-                        } = j;
+                        const { commentId, userId, content, updatedAt } = j;
 
                         let { createdAt } = j;
                         createdAt = postService.timeForToday(createdAt);
 
-                        const { nickname } = j.user;
+                        const { nickname, profileImageUrl } = j.user;
                         comment.push({
                             commentId,
                             userId,
@@ -297,16 +291,12 @@ module.exports = {
 
                     let comment = [];
                     for (j of Comments) {
-                        const {
-                            commentId,
-                            userId,
-                            content,
-                            updatedAt,
-                            profileImageUrl,
-                        } = j;
+                        const { commentId, userId, content, updatedAt } = j;
+
                         let { createdAt } = j;
                         createdAt = postService.timeForToday(createdAt);
-                        const { nickname } = j.user;
+
+                        const { nickname, profileImageUrl } = j.user;
                         comment.push({
                             commentId,
                             userId,
@@ -381,16 +371,12 @@ module.exports = {
 
                         let comment = [];
                         for (j of Comments) {
-                            const {
-                                commentId,
-                                userId,
-                                content,
-                                updatedAt,
-                                profileImageUrl,
-                            } = j;
+                            const { commentId, userId, content, updatedAt } = j;
+
                             let { createdAt } = j;
                             createdAt = postService.timeForToday(createdAt);
-                            const { nickname } = j.user;
+
+                            const { nickname, profileImageUrl } = j.user;
                             comment.push({
                                 commentId,
                                 userId,
