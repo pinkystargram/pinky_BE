@@ -137,80 +137,7 @@ module.exports = {
             });
         }
     },
-    viewPostListSample: async (req, res) => {
-        const { userId } = res.locals;
 
-        try {
-            const postList = await postService.postList();
-
-            let data = [];
-
-            for (i of postList) {
-                const likes = i.Likes;
-                const likeCount = likes.length;
-
-                const comments = i.Comments;
-                const commentCount = comments.length;
-                const { nickname } = i.user;
-                const {
-                    postId,
-                    userId,
-                    content,
-                    imageUrl,
-                    location,
-                    createdAt,
-                    updatedAt,
-                } = i;
-                let comment = [];
-                const { Comments, Likes, Bookmarks } = i;
-                for (j of Comments) {
-                    const {
-                        commentId,
-                        userId,
-                        content,
-                        createdAt,
-                        updatedAt,
-                        profileImageUrl,
-                    } = j;
-                    const { nickname } = j.user;
-                    comment.push({
-                        commentId,
-                        userId,
-                        nickname,
-                        content,
-                        createdAt,
-                        updatedAt,
-                        profileImageUrl,
-                    });
-                }
-                data.push({
-                    postId,
-                    userId,
-                    nickname,
-                    content,
-                    imageUrl,
-                    location,
-                    commentCount,
-                    likeCount,
-                    createdAt,
-                    updatedAt,
-                    commentList: comment,
-                    Likes,
-                    Bookmarks,
-                });
-            }
-            res.status(201).json({
-                result: true,
-                data,
-            });
-        } catch (error) {
-            console.log(error);
-            res.status(400).json({
-                result: false,
-                message: '샘플 전체 게시글 조회 중 오류가 발생하였습니다.',
-            });
-        }
-    },
     viewPostList: async (req, res) => {
         const { userId } = res.locals;
 
@@ -241,9 +168,10 @@ module.exports = {
                         content,
                         imageUrl,
                         location,
-                        createdAt,
                         updatedAt,
                     } = i;
+                    let { createdAt } = i;
+                    createdAt = postService.timeForToday(createdAt);
                     let comment = [];
                     const { Comments, Likes, Bookmarks } = i;
                     for (j of Comments) {
@@ -251,10 +179,11 @@ module.exports = {
                             commentId,
                             userId,
                             content,
-                            createdAt,
                             updatedAt,
                             profileImageUrl,
                         } = j;
+                        let { createdAt } = j;
+                        createdAt = postService.timeForToday(createdAt);
                         const { nickname } = j.user;
                         comment.push({
                             commentId,
@@ -318,9 +247,10 @@ module.exports = {
                         content,
                         imageUrl,
                         location,
-                        createdAt,
                         updatedAt,
                     } = i;
+                    let { createdAt } = i;
+                    createdAt = postService.timeForToday(createdAt);
                     let comment = [];
                     const { Comments, Likes, Bookmarks } = i;
                     for (j of Comments) {
@@ -328,10 +258,11 @@ module.exports = {
                             commentId,
                             userId,
                             content,
-                            createdAt,
                             updatedAt,
                             profileImageUrl,
                         } = j;
+                        let { createdAt } = j;
+                        createdAt = postService.timeForToday(createdAt);
                         const { nickname } = j.user;
                         comment.push({
                             commentId,
@@ -379,9 +310,10 @@ module.exports = {
                             content,
                             imageUrl,
                             location,
-                            createdAt,
                             updatedAt,
                         } = i;
+                        let { createdAt } = i;
+                        createdAt = postService.timeForToday(createdAt);
                         let comment = [];
                         const { Comments, Likes, Bookmarks } = i;
                         for (j of Comments) {
@@ -389,10 +321,11 @@ module.exports = {
                                 commentId,
                                 userId,
                                 content,
-                                createdAt,
                                 updatedAt,
                                 profileImageUrl,
                             } = j;
+                            let { createdAt } = j;
+                            createdAt = postService.timeForToday(createdAt);
                             const { nickname } = j.user;
                             comment.push({
                                 commentId,
