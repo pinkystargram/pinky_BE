@@ -258,6 +258,7 @@ module.exports = {
                     [Op.and]: [
                         { userId: { [Op.notIn]: arr2 } },
                         { userId: { [Op.notIn]: arr } },
+                        { userId: { [Op.ne]: userId } },
                     ],
                 },
             }).then((result) => {
