@@ -50,14 +50,13 @@ module.exports = {
                 { expiresIn: process.env.RTOKENEXPIRE }
             );
 
-            res.cookie('atoken', accessToken, { httpOnly: true });
-            res.cookie('rtoken', refreshToken, { httpOnly: true });
             res.send({
                 result: true,
                 atoken: accessToken,
                 rtoken: refreshToken,
                 email: user.email,
                 nickname: user.nickname,
+                userId: user.userId,
             });
         } catch (error) {
             console.log(error);
