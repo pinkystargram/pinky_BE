@@ -26,7 +26,9 @@ const registerValidation = [
     body('nickname')
         .trim()
         .isLength({ min: 3 })
-        .withMessage('닉네임은 최소 3글자 이상이어야 합니다'),
+        .withMessage('닉네임은 최소 3글자 이상이어야 합니다')
+        .isAlphanumeric('en-US', { ignore: '-_' })
+        .withMessage('닉네임은 영어/숫자만 가능합니다'),
     error,
 ];
 
