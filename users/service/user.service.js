@@ -220,7 +220,10 @@ module.exports = {
 
             let data = await User.findAll({
                 where: {
-                    [Op.and]: [{ userId }, { userId: { [Op.in]: arr2 } }],
+                    [Op.and]: [
+                        { userId: { [Op.ne]: userId } },
+                        { userId: { [Op.in]: arr2 } },
+                    ],
                 },
                 attributes: [
                     'nickname',
@@ -249,7 +252,7 @@ module.exports = {
 
             await User.findAll({
                 attributes: ['nickname', 'profileImageUrl', 'userId'],
-                order: [['followerCount', 'DESC']],
+                order: [sequelize.fn('rand')],
                 limit: limit,
                 where: {
                     [Op.and]: [
@@ -262,7 +265,7 @@ module.exports = {
                     data.push(result[i]);
                 }
             });
-
+            data.sort(() => Math.random() - 0.5); // 순서 랜덤
             return data;
         } catch (error) {
             console.log(error);
