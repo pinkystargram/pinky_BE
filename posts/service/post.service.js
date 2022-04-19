@@ -30,6 +30,9 @@ module.exports = {
                     { model: Bookmark, as: 'Bookmarks' },
                 ],
                 where: { postId },
+                order: [
+                    [{ model: Comment, as: 'Comments' }, 'createdAt', 'ASC'],
+                ],
             });
         } catch (error) {
             console.log(error);
