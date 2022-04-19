@@ -61,6 +61,7 @@ module.exports = {
                         email: reUser.email,
                         nickname: reUser.nickname,
                         userId: reUser.userId,
+                        profileImageUrl: reUser.profileImageUrl,
                     });
                 } else {
                     console.log(error);
