@@ -27,6 +27,7 @@ module.exports = {
             res.locals.userId = authUser.userId;
             res.locals.email = authUser.email;
             res.locals.nickname = authUser.nickname;
+            res.locals.profileImageUrl = authUser.profileImageUrl;
 
             next();
         } catch (error) {

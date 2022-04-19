@@ -64,8 +64,8 @@ module.exports = {
         }
     },
     auth: (req, res) => {
-        const { email, nickname } = res.locals;
+        const { email, nickname, userId, profileImageUrl } = res.locals;
 
-        res.send({ result: true, email, nickname });
+        res.send({ result: true, email, nickname, userId, profileImageUrl });
     },
 };
