@@ -104,7 +104,10 @@ module.exports = {
      */
     doFollow: async (targetId, userId) => {
         try {
-            await Follow.create({ targetId, userId });
+            await Follow.findOrCreate({
+                where: { targetId, userId },
+            });
+
             await User.update(
                 { followCount: sequelize.literal('followCount+1') },
                 { where: { userId } }
@@ -188,10 +191,11 @@ module.exports = {
             console.log(error);
         }
     },
-    test: async (userId) => {
+    followrecommned: async (userId) => {
         try {
             let arr = [];
             let arr2 = [];
+            let limit = 5;
 
             await Follow.findAll({
                 where: { userId },
@@ -200,7 +204,7 @@ module.exports = {
                     arr.push(item.targetId);
                 });
                 return arr;
-            });
+            }); //내가 팔로우한 사람 찾기
 
             await Follow.findAll({
                 where: { userId: { [Op.in]: arr } },
@@ -208,17 +212,31 @@ module.exports = {
                 result.forEach((item) => {
                     arr2.push(item.targetId);
                 });
-            });
+            }); //팔로우한사람이 팔로우한사람 찾기
 
-            arr2 = arr2.filter((x) => !arr.includes(x));
+            arr2 = arr2.filter((x) => !arr.includes(x)); // 겹치는거 빼주기
+            arr2.sort(() => Math.random() - 0.5); // 순서 랜덤
+            arr2 = [...new Set(arr2)];
 
-            return await User.findAll({
+            console.log(arr);
+            console.log(arr2);
+
+            if (arr2.length < 5) limit -= arr2.length;
+
+            let data = await User.findAll({
                 where: { userId: { [Op.in]: arr2 } },
                 attributes: [
                     'nickname',
                     'profileImageUrl',
                     'userId',
                     [sequelize.literal('target_Follows.userId'), 'followId'],
+                    [
+                        sequelize.literal(
+                            `(select count(*) from Follow where 
+                            targetId IN ('${arr2}'))`
+                        ),
+                        'count',
+                    ],
                 ],
                 include: [
                     {
@@ -230,6 +248,20 @@ module.exports = {
                     },
                 ],
             });
+            const add = await User.findAll({
+                attributes: ['nickname', 'profileImageUrl', 'userId'],
+                order: [['followerCount', 'DESC']],
+                limit: limit,
+                where: {
+                    [Op.and]: [
+                        { userId: { [Op.notIn]: arr2 } },
+                        { userId: { [Op.notIn]: arr } },
+                    ],
+                },
+            });
+            data.push(add);
+
+            return data;
         } catch (error) {
             console.log(error);
         }
