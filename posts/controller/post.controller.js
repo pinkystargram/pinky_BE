@@ -141,7 +141,8 @@ module.exports = {
 
     viewPostList: async (req, res) => {
         const { userId } = res.locals;
-        const { page, size } = req.query;
+        const { size, page } = req.query;
+        console.log(size, page);
 
         try {
             const followList = await postService.followList(userId);
@@ -327,10 +328,9 @@ module.exports = {
                     });
                 }
 
-                // let p = page - 1;
-                // data1 = data[p];
-                let p = size * page;
-                data1 = data.slice(0, p);
+                let start = size * page - size;
+                let end = size * page;
+                let data1 = data.slice(start, end);
                 return res.status(201).json({ result: true, data: data1 });
             } else {
                 try {
@@ -412,10 +412,9 @@ module.exports = {
                         });
                     }
 
-                    // let p = page - 1;
-                    // data1 = data[p];
-                    let p = size * page;
-                    data1 = data.slice(0, p);
+                    let start = size * page - size;
+                    let end = size * page;
+                    let data1 = data.slice(start, end);
                     res.status(201).json({
                         result: true,
                         data: data1,
