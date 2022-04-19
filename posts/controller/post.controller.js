@@ -170,11 +170,30 @@ module.exports = {
                         imageUrl,
                         location,
                         updatedAt,
+                        Comments,
+                        Likes,
+                        Bookmarks,
                     } = i;
+
                     let { createdAt } = i;
                     createdAt = postService.timeForToday(createdAt);
+
+                    let likeState = false;
+                    let bookmarkState = false;
+                    for (j of Likes) {
+                        const confirmLike = res.locals.userId;
+                        if (confirmLike === j.userId) {
+                            likeState = true;
+                        }
+                    }
+                    for (j of Bookmarks) {
+                        const confirmBookmark = res.locals.userId;
+                        if (confirmBookmark === j.userId) {
+                            bookmarkState = true;
+                        }
+                    }
+
                     let comment = [];
-                    const { Comments, Likes, Bookmarks } = i;
                     for (j of Comments) {
                         const {
                             commentId,
@@ -183,8 +202,10 @@ module.exports = {
                             updatedAt,
                             profileImageUrl,
                         } = j;
+
                         let { createdAt } = j;
                         createdAt = postService.timeForToday(createdAt);
+
                         const { nickname } = j.user;
                         comment.push({
                             commentId,
@@ -205,6 +226,8 @@ module.exports = {
                         location,
                         commentCount,
                         likeCount,
+                        likeState,
+                        bookmarkState,
                         createdAt,
                         updatedAt,
                         commentList: comment,
@@ -249,11 +272,30 @@ module.exports = {
                         imageUrl,
                         location,
                         updatedAt,
+                        Comments,
+                        Likes,
+                        Bookmarks,
                     } = i;
+
                     let { createdAt } = i;
                     createdAt = postService.timeForToday(createdAt);
+
+                    let likeState = false;
+                    let bookmarkState = false;
+                    for (j of Likes) {
+                        const confirmLike = res.locals.userId;
+                        if (confirmLike === j.userId) {
+                            likeState = true;
+                        }
+                    }
+                    for (j of Bookmarks) {
+                        const confirmBookmark = res.locals.userId;
+                        if (confirmBookmark === j.userId) {
+                            bookmarkState = true;
+                        }
+                    }
+
                     let comment = [];
-                    const { Comments, Likes, Bookmarks } = i;
                     for (j of Comments) {
                         const {
                             commentId,
@@ -284,6 +326,8 @@ module.exports = {
                         location,
                         commentCount,
                         likeCount,
+                        likeState,
+                        bookmarkState,
                         createdAt,
                         updatedAt,
                         commentList: comment,
@@ -312,11 +356,30 @@ module.exports = {
                             imageUrl,
                             location,
                             updatedAt,
+                            Comments,
+                            Likes,
+                            Bookmarks,
                         } = i;
+
                         let { createdAt } = i;
                         createdAt = postService.timeForToday(createdAt);
+
+                        let likeState = false;
+                        let bookmarkState = false;
+                        for (j of Likes) {
+                            const confirmLike = res.locals.userId;
+                            if (confirmLike === j.userId) {
+                                likeState = true;
+                            }
+                        }
+                        for (j of Bookmarks) {
+                            const confirmBookmark = res.locals.userId;
+                            if (confirmBookmark === j.userId) {
+                                bookmarkState = true;
+                            }
+                        }
+
                         let comment = [];
-                        const { Comments, Likes, Bookmarks } = i;
                         for (j of Comments) {
                             const {
                                 commentId,
@@ -347,6 +410,8 @@ module.exports = {
                             location,
                             commentCount,
                             likeCount,
+                            likeState,
+                            bookmarkState,
                             createdAt,
                             updatedAt,
                             commentList: comment,
