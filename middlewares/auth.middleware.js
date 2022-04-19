@@ -60,6 +60,7 @@ module.exports = {
                         atoken: newToken,
                         email: reUser.email,
                         nickname: reUser.nickname,
+                        userId: reUser.userId,
                     });
                 } else {
                     console.log(error);
