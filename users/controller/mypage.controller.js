@@ -2,6 +2,11 @@ const userService = require('../service/user.service');
 const profileMiddleware = require('../../middlewares/profileMulter');
 module.exports = {
     getMypage: async (req, res) => {
+        if (req.params.userId === 'undefined')
+            return res.send({
+                result: false,
+                message: '유저정보가 잘못되었습니다',
+            });
         const { userId } = req.params;
         try {
             const data = await userService.getAllByUserId(userId);
@@ -12,6 +17,11 @@ module.exports = {
         }
     },
     follow: async (req, res) => {
+        if (req.params.userId === 'undefined')
+            return res.send({
+                result: false,
+                message: '유저정보가 잘못되었습니다',
+            });
         const targetId = req.params.userId;
         const userId = res.locals.userId;
 
@@ -36,6 +46,11 @@ module.exports = {
         }
     },
     getUserInfo: async (req, res) => {
+        if (req.params.userId === 'undefined')
+            return res.send({
+                result: false,
+                message: '유저정보가 잘못되었습니다',
+            });
         const { userId } = req.params;
         try {
             const data = await userService.getUserByUserId(userId);
@@ -81,6 +96,11 @@ module.exports = {
         }
     },
     getFollow: async (req, res) => {
+        if (req.params.userId === 'undefined')
+            return res.send({
+                result: false,
+                message: '유저정보가 잘못되었습니다',
+            });
         const { userId } = req.params;
         try {
             const data = await userService.getFollow(userId);
@@ -91,6 +111,11 @@ module.exports = {
         }
     },
     getFollower: async (req, res) => {
+        if (req.params.userId === 'undefined')
+            return res.send({
+                result: false,
+                message: '유저정보가 잘못되었습니다',
+            });
         const { userId } = req.params;
         try {
             const data = await userService.getFollower(userId);
