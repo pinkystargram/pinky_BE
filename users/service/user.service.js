@@ -219,7 +219,9 @@ module.exports = {
             if (arr2.length < 5) limit -= arr2.length;
 
             let data = await User.findAll({
-                where: { userId: { [Op.in]: arr2 } },
+                where: {
+                    [Op.and]: [{ userId }, { userId: { [Op.in]: arr2 } }],
+                },
                 attributes: [
                     'nickname',
                     'profileImageUrl',
