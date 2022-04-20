@@ -76,7 +76,11 @@ module.exports = {
         const { userId } = res.locals;
         const { nickname, bio } = req.body;
         let profileImageUrl;
+        console.log(nickname);
+        console.log(bio);
         if (req.file) profileImageUrl = req.file.location;
+        console.log(profileImageUrl);
+        console.log(req.body);
 
         try {
             const User = await userService.chkByUserId(userId);
