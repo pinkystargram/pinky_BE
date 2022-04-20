@@ -6,6 +6,8 @@ var _Follower = require('./Follower');
 var _Like = require('./Like');
 var _Post = require('./Post');
 var _User = require('./User');
+var _Room = require('./Room');
+var _Chat = require('./Chat');
 
 function initModels(sequelize) {
     var Bookmark = _Bookmark(sequelize, DataTypes);
@@ -55,6 +57,8 @@ function initModels(sequelize) {
         Like,
         Post,
         User,
+        Room,
+        Chat,
     };
 }
 module.exports = initModels;
