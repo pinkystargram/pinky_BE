@@ -142,13 +142,11 @@ module.exports = {
     viewPostList: async (req, res) => {
         const { userId } = res.locals;
         const { size, page } = req.query;
-        console.log(size, page);
 
         try {
             const followList = await postService.followList(userId);
             const confirmFollow = followList.length;
             const userMe = res.locals.userId;
-            console.log(userMe);
             let arrTargetId = [];
             let data = [];
             if (confirmFollow !== 0) {
@@ -156,6 +154,7 @@ module.exports = {
                     const { targetId } = x;
                     arrTargetId.push({ userId: targetId });
                 }
+                arrTargetId.push({ userId: userMe });
                 const followPostList = await postService.followPostList(
                     arrTargetId
                 );
