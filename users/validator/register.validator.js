@@ -8,7 +8,7 @@ const error = (req, res, next) => {
     }
     console.log(errors.array()[0].msg);
     return res
-        .status(401)
+        .status(400)
         .json({ result: false, message: errors.array()[0].msg });
 };
 
