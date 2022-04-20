@@ -1,9 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
+//controller
 const userController = require('./controller/user.controller');
 const mypageController = require('./controller/mypage.controller');
+
+//validator
 const registerValidator = require('./validator/register.validator');
+const modifyValidator = require('./validator/modify.validator');
+
+//middleware
 const authMiddleware = require('../middlewares/auth.middleware');
 const profileMiddleware = require('../middlewares/profileMulter');
 
@@ -25,6 +31,7 @@ router.put(
     '/info',
     authMiddleware.auth,
     profileMiddleware.uploadProfile.single('profileImageUrl'),
+    modifyValidator,
     mypageController.modify
 );
 
