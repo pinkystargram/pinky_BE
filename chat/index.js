@@ -6,4 +6,6 @@ const chatController = require('./controller/chat.controller');
 
 router.get('/', authMiddleware.auth, chatController.getChatList);
 
+router.get('/:roomId', authMiddleware.auth, chatController.getChatMessage);
+
 module.exports = router;
