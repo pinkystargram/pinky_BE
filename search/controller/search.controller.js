@@ -3,7 +3,7 @@ const searchService = require('../service/search.service');
 module.exports = {
     search: async (req, res) => {
         try {
-            const { searchText } = req.body;
+            const { searchText } = req.query;
             const data = await searchService.searchUser(searchText);
             res.status(201).json({ result: true, data });
         } catch (error) {

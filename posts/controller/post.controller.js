@@ -147,6 +147,8 @@ module.exports = {
         try {
             const followList = await postService.followList(userId);
             const confirmFollow = followList.length;
+            const userMe = res.locals.userId;
+            console.log(userMe);
             let arrTargetId = [];
             let data = [];
             if (confirmFollow !== 0) {
