@@ -1,8 +1,10 @@
 const userService = require('../users/service/user.service');
 const jwt = require('jsonwebtoken');
+const redis = require('../config/redis');
 
 module.exports = {
     auth: async (req, res, next) => {
+        const agent = req.headers['user-agent'];
         try {
             if (!req.headers.authorization)
                 return res.status(401).send({
@@ -42,6 +44,7 @@ module.exports = {
                             message: '로그인 후 사용하세요',
                             reason: '리프레쉬 토큰이 Bearer가 아니에요',
                         });
+
                     const reAuthedToken = jwt.verify(
                         reTokenValue,
                         process.env.REFRESHKEY
@@ -49,6 +52,16 @@ module.exports = {
                     const reUser = await userService.chkByEmail(
                         reAuthedToken.email
                     );
+                    const key = reUser.userId + agent;
+                    const dbToken = await redis.get(key);
+
+                    if (dbToken !== reTokenValue) {
+                        return res.status(401).send({
+                            result: false,
+                            message: '로그인 후 사용하세요',
+                            reason: 'DB내 리프레쉬토큰과 다릅니다',
+                        });
+                    }
                     const payload = {
                         userId: reUser.userId,
                         nickname: reUser.nickname,

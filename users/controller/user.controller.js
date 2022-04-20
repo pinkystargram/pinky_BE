@@ -1,6 +1,7 @@
 const userService = require('../service/user.service');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const redis = require('../../config/redis');
 
 module.exports = {
     signup: async (req, res) => {
@@ -27,6 +28,8 @@ module.exports = {
     },
     login: async (req, res) => {
         const { email, password } = req.body;
+        const agent = req.headers['user-agent'];
+
         try {
             const user = await userService.chkByEmail(email);
             if (!user)
@@ -41,14 +44,18 @@ module.exports = {
                 });
 
             const payload = { userId: user.userId, nickname: user.nickname };
-            const accessToken = await jwt.sign(payload, process.env.ACCESSKEY, {
+            const accessToken = jwt.sign(payload, process.env.ACCESSKEY, {
                 expiresIn: process.env.ATOKENEXPIRE,
             });
-            const refreshToken = await jwt.sign(
+            const refreshToken = jwt.sign(
                 { email: user.email },
                 process.env.REFRESHKEY,
                 { expiresIn: process.env.RTOKENEXPIRE }
             );
+
+            const key = user.userId + agent;
+
+            await redis.set(key, refreshToken);
 
             res.send({
                 result: true,
