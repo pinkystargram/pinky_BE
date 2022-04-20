@@ -7,6 +7,7 @@ const like = require('../likes');
 const bookmark = require('../bookmarks');
 const search = require('../search');
 const kakao = require('../login.kakao');
+const chat = require('../chat');
 
 router.use('/users', user);
 router.use('/posts', post);
@@ -15,5 +16,6 @@ router.use('/likes', like);
 router.use('/bookmarks', bookmark);
 router.use('/searches', search);
 router.use('/login/kakao', kakao);
+router.use('/chats', chat);
 
 module.exports = router;
