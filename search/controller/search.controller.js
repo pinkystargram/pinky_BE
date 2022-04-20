@@ -5,7 +5,6 @@ module.exports = {
         try {
             const { searchText } = req.body;
             const data = await searchService.searchUser(searchText);
-            console.log(data);
             res.status(201).json({ result: true, data });
         } catch (error) {
             console.log(error);
