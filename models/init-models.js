@@ -15,6 +15,8 @@ function initModels(sequelize) {
     var Like = _Like(sequelize, DataTypes);
     var Post = _Post(sequelize, DataTypes);
     var User = _User(sequelize, DataTypes);
+    var Room = _Room(sequelize, DataTypes);
+    var Chat = _Chat(sequelize, DataTypes);
 
     Bookmark.belongsTo(Post, { as: 'post', foreignKey: 'postId' });
     Post.hasMany(Bookmark, { as: 'Bookmarks', foreignKey: 'postId' });
@@ -36,6 +38,14 @@ function initModels(sequelize) {
     User.hasMany(Like, { as: 'Likes', foreignKey: 'userId' });
     Post.belongsTo(User, { as: 'user', foreignKey: 'userId' });
     User.hasMany(Post, { as: 'Posts', foreignKey: 'userId' });
+    Chat.belongsTo(Room, { as: 'room', foreignKey: 'roomId' });
+    Room.hasMany(Chat, { as: 'Chats', foreignKey: 'roomId' });
+    Chat.belongsTo(User, { as: 'user', foreignKey: 'userId' });
+    User.hasMany(Chat, { as: 'Chats', foreignKey: 'userId' });
+    Room.belongsTo(User, { as: 'user', foreignKey: 'userId' });
+    User.hasMany(Room, { as: 'Rooms', foreignKey: 'userId' });
+    Room.belongsTo(User, { as: 'target', foreignKey: 'targetId' });
+    User.hasMany(Room, { as: 'target_Rooms', foreignKey: 'targetId' });
 
     return {
         Bookmark,
