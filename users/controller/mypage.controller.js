@@ -78,6 +78,12 @@ module.exports = {
         let profileImageUrl;
         console.log(nickname);
         console.log(bio);
+        if (!req.file) {
+            return res.status(400).json({
+                result: false,
+                message: '이미지를 등록해주세요.',
+            });
+        }
         if (req.file) profileImageUrl = req.file.location;
         console.log(profileImageUrl);
         console.log(req.body);
