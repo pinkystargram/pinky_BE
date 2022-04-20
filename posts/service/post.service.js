@@ -49,7 +49,11 @@ module.exports = {
         try {
             return Post.findAll({
                 include: [
-                    { model: User, as: 'user', attributes: ['nickname'] },
+                    {
+                        model: User,
+                        as: 'user',
+                        attributes: ['nickname', 'profileImageUrl'],
+                    },
                     {
                         model: Comment,
                         as: 'Comments',
@@ -113,7 +117,11 @@ module.exports = {
             return Post.findAll({
                 where: { [Op.or]: targetId },
                 include: [
-                    { model: User, as: 'user', attributes: ['nickname'] },
+                    {
+                        model: User,
+                        as: 'user',
+                        attributes: ['nickname', 'profileImageUrl'],
+                    },
                     {
                         model: Comment,
                         as: 'Comments',
@@ -147,7 +155,11 @@ module.exports = {
             return Post.findAll({
                 where: { [Op.or]: targetId },
                 include: [
-                    { model: User, as: 'user', attributes: ['nickname'] },
+                    {
+                        model: User,
+                        as: 'user',
+                        attributes: ['nickname', 'profileImageUrl'],
+                    },
                     {
                         model: Comment,
                         as: 'Comments',

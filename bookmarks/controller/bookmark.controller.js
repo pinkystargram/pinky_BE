@@ -32,7 +32,7 @@ module.exports = {
                             const comments = i.Comments;
                             const commentCount = comments.length;
 
-                            const { nickname } = i.user;
+                            const { nickname, profileImageUrl } = i.user;
                             const {
                                 postId,
                                 userId,
@@ -97,6 +97,7 @@ module.exports = {
                                 likeCount,
                                 likeState,
                                 bookmarkState,
+                                profileImageUrl,
                                 createdAt,
                                 updatedAt,
                                 commentList: comment,
@@ -135,7 +136,7 @@ module.exports = {
                             const comments = i.Comments;
                             const commentCount = comments.length;
 
-                            const { nickname } = i.user;
+                            const { nickname, profileImageUrl } = i.user;
                             const {
                                 postId,
                                 userId,
@@ -200,6 +201,7 @@ module.exports = {
                                 likeCount,
                                 likeState,
                                 bookmarkState,
+                                profileImageUrl,
                                 createdAt,
                                 updatedAt,
                                 commentList: comment,
@@ -220,7 +222,7 @@ module.exports = {
 
                                 const comments = i.Comments;
                                 const commentCount = comments.length;
-                                const { nickname } = i.user;
+                                const { nickname, profileImageUrl } = i.user;
                                 const {
                                     postId,
                                     userId,
@@ -287,6 +289,7 @@ module.exports = {
                                     likeCount,
                                     likeState,
                                     bookmarkState,
+                                    profileImageUrl,
                                     createdAt,
                                     updatedAt,
                                     commentList: comment,
@@ -336,7 +339,7 @@ module.exports = {
                             const comments = i.Comments;
                             const commentCount = comments.length;
 
-                            const { nickname } = i.user;
+                            const { nickname, profileImageUrl } = i.user;
                             const {
                                 postId,
                                 userId,
@@ -401,6 +404,7 @@ module.exports = {
                                 likeCount,
                                 likeState,
                                 bookmarkState,
+                                profileImageUrl,
                                 createdAt,
                                 updatedAt,
                                 commentList: comment,
@@ -439,7 +443,7 @@ module.exports = {
                             const comments = i.Comments;
                             const commentCount = comments.length;
 
-                            const { nickname } = i.user;
+                            const { nickname, profileImageUrl } = i.user;
                             const {
                                 postId,
                                 userId,
@@ -504,6 +508,7 @@ module.exports = {
                                 likeCount,
                                 likeState,
                                 bookmarkState,
+                                profileImageUrl,
                                 createdAt,
                                 updatedAt,
                                 commentList: comment,
@@ -524,7 +529,7 @@ module.exports = {
 
                                 const comments = i.Comments;
                                 const commentCount = comments.length;
-                                const { nickname } = i.user;
+                                const { nickname, profileImageUrl } = i.user;
                                 const {
                                     postId,
                                     userId,
@@ -591,6 +596,7 @@ module.exports = {
                                     likeCount,
                                     likeState,
                                     bookmarkState,
+                                    profileImageUrl,
                                     createdAt,
                                     updatedAt,
                                     commentList: comment,
