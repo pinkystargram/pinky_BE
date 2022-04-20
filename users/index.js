@@ -24,7 +24,7 @@ router.post('/:userId/follow', authMiddleware.auth, mypageController.follow);
 router.put(
     '/info',
     authMiddleware.auth,
-    profileMiddleware.uploadProfile.single('profileImgUrl'),
+    profileMiddleware.uploadProfile.single('profileImageUrl'),
     mypageController.modify
 );
 

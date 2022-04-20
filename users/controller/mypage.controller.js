@@ -76,17 +76,8 @@ module.exports = {
         const { userId } = res.locals;
         const { nickname, bio } = req.body;
         let profileImageUrl;
-        console.log(nickname);
-        console.log(bio);
-        if (!req.file) {
-            return res.status(400).json({
-                result: false,
-                message: '이미지를 등록해주세요.',
-            });
-        }
+
         if (req.file) profileImageUrl = req.file.location;
-        console.log(profileImageUrl);
-        console.log(req.body);
 
         try {
             const User = await userService.chkByUserId(userId);
