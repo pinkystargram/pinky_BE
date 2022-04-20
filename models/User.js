@@ -25,7 +25,7 @@ module.exports = function (sequelize, DataTypes) {
             profileImageUrl: {
                 type: DataTypes.STRING(100),
                 defaultValue:
-                    'https://www.snsboom.co.kr/common/img/default_profile.png',
+                    'https://cdn.dribbble.com/users/1338391/screenshots/15264109/media/1febee74f57d7d08520ddf66c1ff4c18.jpg?compress=1&resize=400x300&vertical=top',
                 allowNull: true,
             },
             bio: {
