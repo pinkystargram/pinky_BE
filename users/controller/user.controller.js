@@ -8,13 +8,13 @@ module.exports = {
         const { email, nickname, password } = req.body;
         try {
             if (await userService.chkByEmail(email)) {
-                return res.send({
+                return res.status(400).send({
                     result: false,
                     message: '이미 ID가 존재합니다',
                 });
             }
             if (await userService.chkByNickname(nickname))
-                return res.send({
+                return res.status(400).send({
                     result: false,
                     message: '이미 닉네임이 존재합니다',
                 });
@@ -33,12 +33,12 @@ module.exports = {
         try {
             const user = await userService.chkByEmail(email);
             if (!user)
-                return res.send({
+                return res.status(400).send({
                     result: false,
                     message: '이메일이나 비밀번호가 잘못되었습니다',
                 });
             if (!bcrypt.compareSync(password, user.password))
-                return res.send({
+                return res.status(400).send({
                     result: false,
                     message: '이메일이나 비밀번호가 잘못되었습니다',
                 });
