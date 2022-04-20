@@ -7,7 +7,9 @@ const error = (req, res, next) => {
         return next();
     }
     console.log(errors.array()[0].msg);
-    return res.json({ result: false, message: errors.array()[0].msg });
+    return res
+        .status(401)
+        .json({ result: false, message: errors.array()[0].msg });
 };
 
 const registerValidation = [
