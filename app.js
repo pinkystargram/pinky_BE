@@ -15,7 +15,7 @@ app.use(
             'http://localhost:3001',
             'http://haewonreacthomework2.s3-website.ap-northeast-2.amazonaws.com',
             'https://ggulduk2.shop',
-            'http://ud.dicegame.react.s3-website.ap-northeast-2.amazonaws.com/login',
+            'http://ud.dicegame.react.s3-website.ap-northeast-2.amazonaws.com',
         ],
     })
 );
