@@ -8,17 +8,16 @@ const morgan = require('morgan');
 const passport = require('passport');
 const passportConfig = require('./login.kakao/');
 
-// app.use(
-//     cors({
-//         origin: [
-//             // 'http://localhost:3000',
-//             // 'http://haewonreacthomework2.s3-website.ap-northeast-2.amazonaws.com',
-//             '*',
-//         ],
-//         credentials: true,
-//     })
-// );
-app.use(cors());
+app.use(
+    cors({
+        origin: [
+            'http://localhost:3000',
+            'http://haewonreacthomework2.s3-website.ap-northeast-2.amazonaws.com',
+            'https://ggulduk2.shop',
+        ],
+    })
+);
+// app.use(cors());
 app.use(morgan('dev'));
 
 const swaggerUi = require('swagger-ui-express');
