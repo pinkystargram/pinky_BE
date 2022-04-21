@@ -46,7 +46,9 @@ router.get(
         res.header('email', user);
         res.header('nickname', nickname.nickname);
         res.header('userId', nickname.userId);
-        res.redirect('/');
+        res.redirect(
+            'http://ud.dicegame.react.s3-website.ap-northeast-2.amazonaws.com/'
+        );
     }
 );
 module.exports = router;
