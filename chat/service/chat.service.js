@@ -1,4 +1,4 @@
-const { User, Chat, Room, Comment } = require('../../models');
+const { User, Chat, Room } = require('../../models');
 const { Op } = require('sequelize');
 const sequelize = require('sequelize');
 
