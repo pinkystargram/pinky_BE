@@ -95,14 +95,26 @@ module.exports = {
 
             await redis.set(key, refreshToken);
 
-            res.send({
-                result: true,
-                atoken: accessToken,
-                rtoken: refreshToken,
-                email: user.email,
-                nickname: user.nickname,
-                userId: user.userId,
+            res.cookie('ACCESS_TOKEN', accessToken, {
+                sameSite: 'None',
+                secure: 'true',
+                httpOnly: true,
             });
+            res.cookie('REFRESH_TOKEN', refreshToken, {
+                sameSite: 'None',
+                secure: 'true',
+                httpOnly: true,
+            });
+
+            return res.redirect('/');
+            // return res.send({
+            //     result: true,
+            //     atoken: accessToken,
+            //     rtoken: refreshToken,
+            //     email: user.email,
+            //     nickname: user.nickname,
+            //     userId: user.userId,
+            // });
         } catch (error) {
             console.log(error);
             res.send({ result: false, error });
