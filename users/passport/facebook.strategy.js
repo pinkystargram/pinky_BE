@@ -24,10 +24,10 @@ module.exports = new FacebookStrategy(
                 else nickname = 'pinky_' + Math.random(1, 1000);
             }
             await userService.createFacebook(email, nickname, password);
-            res.send({ result: true, atoken: accessToken });
+            return cb(err, user);
         } catch (error) {
             console.log(error);
-            res.send({ result: false, error });
+            return cb(err, false);
         }
     }
 );
