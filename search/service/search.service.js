@@ -6,7 +6,7 @@ module.exports = {
         try {
             return User.findAll({
                 where: { nickname: { [Op.like]: `%${searchText}%` } },
-                attributes: ['nickname', 'profileImageUrl'],
+                attributes: ['nickname', 'profileImageUrl', 'userId'],
             });
         } catch (error) {
             console.log(error);
