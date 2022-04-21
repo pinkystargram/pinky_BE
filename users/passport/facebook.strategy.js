@@ -17,14 +17,12 @@ module.exports = new FacebookStrategy(
             const chk = await userService.chkByEmail(email);
             if (chk) return cb(null, profile);
             let nickname = 'pinky_' + Math.random(1, 1000);
-
             let chkResult = 1;
             while (!chkResult) {
                 let nickChk = await userService.chkByNickname(nickname);
                 if (!nickChk) chkResult = 0;
                 else nickname = 'pinky_' + Math.random(1, 1000);
             }
-
             await userService.createFacebook(email, nickname, password);
             res.send({ result: true, atoken: accessToken });
         } catch (error) {

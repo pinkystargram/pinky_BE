@@ -17,11 +17,7 @@ const profileMiddleware = require('../middlewares/profileMulter');
 router.get('/auth', authMiddleware.auth, userController.auth);
 router.post('/signup', registerValidator, userController.signup);
 router.post('/login', userController.login);
-router.get(
-    '/facebook',
-    passport.authenticate('facebook'),
-    userController.facebook
-);
+router.get('/facebook', passport.authenticate('facebook'));
 router.get(
     '/facebook/callback',
     passport.authenticate('facebook'),

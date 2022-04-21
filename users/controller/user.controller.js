@@ -75,11 +75,37 @@ module.exports = {
 
         res.send({ result: true, email, nickname, userId, profileImageUrl });
     },
-    facebook: (req, res) => {
-        console.log('11');
-    },
-    facebookCallback: (req, res) => {
-        console.log(22);
-        redirect('/');
+    facebookCallback: async (req, res) => {
+        const email = req.user._json.email;
+        const agent = req.headers['user-agent'];
+        try {
+            const user = await userService.chkByEmail(email);
+
+            const payload = { userId: user.userId, nickname: user.nickname };
+            const accessToken = jwt.sign(payload, process.env.ACCESSKEY, {
+                expiresIn: process.env.ATOKENEXPIRE,
+            });
+            const refreshToken = jwt.sign(
+                { email: user.email },
+                process.env.REFRESHKEY,
+                { expiresIn: process.env.RTOKENEXPIRE }
+            );
+
+            const key = user.userId + agent;
+
+            await redis.set(key, refreshToken);
+
+            res.send({
+                result: true,
+                atoken: accessToken,
+                rtoken: refreshToken,
+                email: user.email,
+                nickname: user.nickname,
+                userId: user.userId,
+            });
+        } catch (error) {
+            console.log(error);
+            res.send({ result: false, error });
+        }
     },
 };
