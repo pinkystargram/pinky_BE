@@ -30,20 +30,20 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.disable('x-powered-by');
-// app.use(
-//     session({
-//         resave: false,
-//         saveUninitialized: false,
-//         secret: process.env.SESSION_SECRET,
-//         cookie: {
-//             httpOnly: true,
-//             secure: false,
-//         },
-//     })
-// );
+app.use(
+    session({
+        resave: false,
+        saveUninitialized: false,
+        secret: process.env.SESSION_SECRET,
+        cookie: {
+            httpOnly: true,
+            secure: false,
+        },
+    })
+);
 passportConfig();
 app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.session());
 
 const Router = require('./routes');
 app.use('/api', Router);
