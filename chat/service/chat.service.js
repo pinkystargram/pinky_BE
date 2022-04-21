@@ -1,19 +1,19 @@
-const { User, Chat, Room, Comment } = require('../../models');
+const { User, Chat, Room } = require('../../models');
 const { Op } = require('sequelize');
 
 module.exports = {
     findRoom: async ({ userId, targetId, roomId }) => {
         try {
             console.log('!!!', userId, targetId);
-            if (!userId || !targetId) {
+            if (!userId || !targetId || !roomId) {
                 //   throw customizedError(MESSAGE.WRONG_REQ, 400);
                 throw new Error('잘못된 요청입니다.');
             }
 
+            // TODO userId, targetId 서로 바뀌면 새로운 room이 생성되는 것 수정 필요
             const findRoom = await Room.findOne({
                 where: { roomId },
             });
-            console.log('???', findRoom);
             const findUser = await User.findOne({ where: { userId } });
             const findTarget = await User.findOne({
                 where: { userId: targetId },
@@ -32,7 +32,9 @@ module.exports = {
             console.log(error);
         }
     },
-    saveChatMessage: async () => {},
+    saveChatMessage: async ({ roomId, userId, targetId, chatText }) => {
+        // await Chat.create({where:{roomId}})
+    },
     getChatRoomList: async (userId) => {
         try {
             let arr = [];
@@ -42,10 +44,8 @@ module.exports = {
 
             // 찾아온 내 채팅방 리스트에는 userId 또는 targetId에 내가 들어있는데 나를 제외하고 상대 user를 찾는다
             for (let i = 0; i < rooms.length; i++) {
-                if (rooms[i].userId === userId)
-                    arr.push(
-                        rooms[i].targetId
-                    ); // rooms.userId가 나랑 같으면 targetId가 상대
+                if (rooms[i].userId === userId) arr.push(rooms[i].targetId);
+                // rooms.userId가 나랑 같으면 targetId가 상대
                 else if (rooms[i].targetId === userId)
                     // rooms.targetId가 나랑 같으면 userId가 상대
                     arr.push(rooms[i].userId);
@@ -73,8 +73,10 @@ module.exports = {
                 order: [['createdAt', 'ASC']],
             }).then((result) => {
                 for (let i = 0; i < result.length; i++) {
-                    if (result[i].userId === userId) result[i].dataValues.sendUser = 'me';
-                    else if (result[i].userId !== userId) result[i].dataValues.sendUser = 'you'
+                    if (result[i].userId === userId)
+                        result[i].dataValues.sendUser = 'me';
+                    else if (result[i].userId !== userId)
+                        result[i].dataValues.sendUser = 'you';
                 }
                 return result;
             });
