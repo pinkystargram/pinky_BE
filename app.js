@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const morgan = require('morgan');
 const passport = require('passport');
+const passportConfig = require('./login.kakao/');
 
 app.use(
     cors({
@@ -39,6 +40,7 @@ app.use(
         },
     })
 );
+passportConfig();
 app.use(passport.initialize());
 app.use(passport.session());
 
