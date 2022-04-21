@@ -318,4 +318,7 @@ module.exports = {
             attributes: ['nickname', 'profileImageUrl', 'userId'],
         });
     },
+    createFacebook: async (email, nickname, password) => {
+        return await User.create({ email, nickname, password });
+    },
 };
