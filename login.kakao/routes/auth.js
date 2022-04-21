@@ -3,6 +3,7 @@ const passport = require('passport');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const { User } = require('../../models');
+const redis = require('../../config/redis');
 
 router.get('/kakao', passport.authenticate('kakao'));
 
@@ -12,8 +13,8 @@ router.get(
         failureRedirect: '/',
     }),
     async (req, res) => {
-        const { code } = req.query;
         const { user } = req.session.passport;
+        const agent = req.headers['user-agent'];
         const nickname = await User.findOne({
             where: { email: user },
             attributes: ['nickname', 'userId'],
@@ -22,14 +23,24 @@ router.get(
             userId: nickname.userId,
             nickname: nickname.nickname,
         };
-        const accessToken = await jwt.sign(payload, process.env.ACCESSKEY, {
+        const accessToken = jwt.sign(payload, process.env.ACCESSKEY, {
             expiresIn: process.env.ATOKENEXPIRE,
         });
-        const refreshToken = await jwt.sign(
-            { email: user },
-            process.env.REFRESHKEY,
-            { expiresIn: process.env.RTOKENEXPIRE }
-        );
+        const refreshToken = jwt.sign({ email: user }, process.env.REFRESHKEY, {
+            expiresIn: process.env.RTOKENEXPIRE,
+        });
+        const key = user.userId + agent;
+        await redis.set(key, refreshToken);
+        res.cookie('ACCESS_TOKEN', accessToken, {
+            sameSite: 'None',
+            httpOnly: true,
+            secure: true,
+        });
+        res.cookie('REFRESH_TOKEN', refreshToken, {
+            sameSite: 'None',
+            httpOnly: true,
+            secure: true,
+        });
         res.header('atoken', accessToken);
         res.header('rtoken', refreshToken);
         res.header('email', user);
