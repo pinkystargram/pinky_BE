@@ -8,17 +8,16 @@ const morgan = require('morgan');
 const passport = require('passport');
 const passportConfig = require('./login.kakao/');
 
-// app.use(
-//     cors({
-//         origin: [
-//             // 'http://localhost:3000',
-//             // 'http://haewonreacthomework2.s3-website.ap-northeast-2.amazonaws.com',
-//             '*',
-//         ],
-//         credentials: true,
-//     })
-// );
-app.use(cors());
+app.use(
+    cors({
+        origin: [
+            // 'http://localhost:3000',
+            // 'http://haewonreacthomework2.s3-website.ap-northeast-2.amazonaws.com',
+            '*',
+        ],
+        credentials: true,
+    })
+);
 app.use(morgan('dev'));
 
 const swaggerUi = require('swagger-ui-express');
@@ -31,21 +30,20 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.disable('x-powered-by');
-app.use(
-    session({
-        resave: false,
-        proxy: true,
-        saveUninitialized: false,
-        secret: process.env.SESSION_SECRET,
-        cookie: {
-            httpOnly: true,
-            secure: false,
-        },
-    })
-);
+// app.use(
+//     session({
+//         resave: false,
+//         saveUninitialized: false,
+//         secret: process.env.SESSION_SECRET,
+//         cookie: {
+//             httpOnly: true,
+//             secure: false,
+//         },
+//     })
+// );
 passportConfig();
 app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.session());
 
 const Router = require('./routes');
 app.use('/api', Router);
