@@ -1,9 +1,18 @@
-const express = require('express');
-const router = express.Router();
-const authMiddleware = require('../middlewares/auth.middleware');
-const kakaoController = require('./controller/login.kakao.controller');
+const passport = require('passport');
+const kakaoStrategy = require('./kakao.strategy');
+const { User } = require('../models');
 
-// router.get('/', kakaoController);
-// router.get('/callback', kakaoController);
+module.exports = () => {
+    passport.serializeUser((user, done) => {
+        console.log('user.email===', user.email);
+        done(null, user.email);
+    });
 
-module.exports = router;
+    passport.deserializeUser((email, done) => {
+        console.log('email===', email);
+        User.findOne({ where: { email } })
+            .then((user) => done(null, user))
+            .catch((err) => done(err));
+    });
+    kakaoStrategy();
+};
