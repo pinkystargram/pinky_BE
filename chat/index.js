@@ -4,8 +4,12 @@ const authMiddleware = require('../middlewares/auth.middleware');
 
 const chatController = require('./controller/chat.controller');
 
-router.get('/', authMiddleware.auth, chatController.getChatList);
+router.get('/:targetId', authMiddleware.auth, chatController.getChatList);
 
-router.get('/:roomId', authMiddleware.auth, chatController.getChatMessage);
+router.get(
+    '/rooms/:roomId',
+    authMiddleware.auth,
+    chatController.getChatMessage
+);
 
 module.exports = router;

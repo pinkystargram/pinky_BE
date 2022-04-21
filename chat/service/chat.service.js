@@ -3,41 +3,57 @@ const { Op } = require('sequelize');
 const sequelize = require('sequelize');
 
 module.exports = {
-    findRoom: async ({ userId, targetId, roomId }) => {
-        try {
-            console.log('!!!', userId, targetId);
-            if (!userId || !targetId) {
-                //   throw customizedError(MESSAGE.WRONG_REQ, 400);
-                throw new Error('잘못된 요청입니다.');
-            }
+    // findRoom: async ({ userId, targetId, roomId }) => {
+    //     try {
+    //         console.log('!!!', userId, targetId);
+    //         if (!userId || !targetId) {
+    //             //   throw customizedError(MESSAGE.WRONG_REQ, 400);
+    //             throw new Error('잘못된 요청입니다.');
+    //         }
 
-            const findRoom = await Room.findOne({
-                where: { roomId },
-            });
-            console.log('???', findRoom);
-            const findUser = await User.findOne({ where: { userId } });
-            const findTarget = await User.findOne({
-                where: { userId: targetId },
-            });
+    //         const findRoom = await Room.findOne({
+    //             where: { roomId },
+    //         });
+    //         console.log('???', findRoom);
+    //         const findUser = await User.findOne({ where: { userId } });
+    //         const findTarget = await User.findOne({
+    //             where: { userId: targetId },
+    //         });
 
-            // 기존 채팅 방이 없으면 생성 후 리턴
-            if (!findRoom) {
-                await Room.create({
-                    userId: findUser.userId,
-                    targetId: findTarget.userId,
-                });
-                return;
-            }
-            return;
-        } catch (error) {
-            console.log(error);
-        }
-    },
+    //         return;
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // },
     saveChatMessage: async () => {},
-    getChatRoomList: async (userId) => {
+    getChatRoomList: async (userId, targetId) => {
         try {
             let arr = [];
             let arr2 = [];
+            console.log(userId);
+            console.log(targetId);
+
+            const chkRoom = await Room.findOne({
+                where: {
+                    [Op.or]: [
+                        { [Op.and]: [{ userId }, { targetId }] },
+                        {
+                            [Op.and]: [
+                                { userId: targetId },
+                                { targetId: userId },
+                            ],
+                        },
+                    ],
+                },
+            });
+
+            if (!chkRoom) {
+                await Room.create({
+                    userId: userId,
+                    targetId: targetId,
+                });
+            }
+
             const rooms = await Room.findAll({
                 where: { [Op.or]: [{ userId }, { targetId: userId }] }, // userId나 targetId에 userId가 있는 것을 확인한다.
             });
@@ -67,10 +83,10 @@ module.exports = {
                     result[i].dataValues.roomId = rooms[i].roomId;
                     result[i].dataValues.userId = arr2[i];
                 }
-                console.log('result', result);
+
                 return result;
             });
-            console.log('data', data);
+
             return data;
         } catch (error) {
             console.log(error);

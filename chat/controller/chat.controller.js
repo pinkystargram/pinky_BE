@@ -24,10 +24,13 @@ module.exports = {
     },
     getChatList: async (req, res) => {
         const userId = res.locals.userId;
-        console.log(userId);
+        const { targetId } = req.params;
 
         try {
-            const findChatRoom = await chatService.getChatRoomList(userId);
+            const findChatRoom = await chatService.getChatRoomList(
+                userId,
+                targetId
+            );
             res.status(200).json({
                 result: true,
                 data: findChatRoom,
