@@ -32,7 +32,7 @@ module.exports = {
                 targetId
             );
             res.status(200).json({
-                result: true,
+                result: '이거맞나요',
                 data: findChatRoom,
             });
         } catch (error) {
