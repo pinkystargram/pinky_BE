@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('./passport');
 
 //controller
 const userController = require('./controller/user.controller');
@@ -16,6 +17,16 @@ const profileMiddleware = require('../middlewares/profileMulter');
 router.get('/auth', authMiddleware.auth, userController.auth);
 router.post('/signup', registerValidator, userController.signup);
 router.post('/login', userController.login);
+router.get(
+    '/facebook',
+    passport.authenticate('facebook'),
+    userController.facebook
+);
+router.get(
+    '/facebook/callback',
+    passport.authenticate('facebook'),
+    userController.facebookCallback
+);
 
 router.get('/:userId/mypage', authMiddleware.auth, mypageController.getMypage);
 router.get('/:userId/info', authMiddleware.auth, mypageController.getUserInfo);
