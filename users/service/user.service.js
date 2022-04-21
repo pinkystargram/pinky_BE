@@ -216,7 +216,7 @@ module.exports = {
             arr2.sort(() => Math.random() - 0.5); // 순서 랜덤
             arr2 = [...new Set(arr2)];
             if (arr2.length < 5) limit -= arr2.length;
-            else limit = 0;
+            else limit = 1;
 
             let data = await User.findAll({
                 where: {
@@ -242,7 +242,7 @@ module.exports = {
                     },
                 ],
             }).then(async (result) => {
-                if (result.length > 5) result.length = 5;
+                if (result.length > 5) result.length = 4;
                 for (let i = 0; i < result.length; i++) {
                     const count = await Follow.count({
                         where: { targetId: result[i].userId },
