@@ -34,6 +34,7 @@ app.disable('x-powered-by');
 app.use(
     session({
         resave: false,
+        proxy: true,
         saveUninitialized: false,
         secret: process.env.SESSION_SECRET,
         cookie: {
