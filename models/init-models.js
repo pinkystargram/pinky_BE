@@ -8,6 +8,7 @@ var _Post = require('./Post');
 var _User = require('./User');
 var _Room = require('./Room');
 var _Chat = require('./Chat');
+var _Timeline = require('./Timeline');
 
 function initModels(sequelize) {
     var Bookmark = _Bookmark(sequelize, DataTypes);
@@ -19,6 +20,7 @@ function initModels(sequelize) {
     var User = _User(sequelize, DataTypes);
     var Room = _Room(sequelize, DataTypes);
     var Chat = _Chat(sequelize, DataTypes);
+    var Timeline = _Timeline(sequelize, DataTypes);
 
     Bookmark.belongsTo(Post, { as: 'post', foreignKey: 'postId' });
     Post.hasMany(Bookmark, { as: 'Bookmarks', foreignKey: 'postId' });
@@ -48,6 +50,10 @@ function initModels(sequelize) {
     User.hasMany(Room, { as: 'Rooms', foreignKey: 'userId' });
     Room.belongsTo(User, { as: 'target', foreignKey: 'targetId' });
     User.hasMany(Room, { as: 'target_Rooms', foreignKey: 'targetId' });
+    Timeline.belongsTo(User, { as: 'user', foreignKey: 'userId' });
+    User.hasMany(Timeline, { as: 'Timelines', foreignKey: 'userId' });
+    Timeline.belongsTo(Post, { as: 'post', foreignKey: 'postId' });
+    Post.hasMany(Timeline, { as: 'Timelines', foreignKey: 'postId' });
 
     return {
         Bookmark,
@@ -58,6 +64,7 @@ function initModels(sequelize) {
         Post,
         User,
         Room,
+        Timeline,
         Chat,
     };
 }

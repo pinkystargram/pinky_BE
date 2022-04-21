@@ -142,11 +142,11 @@ module.exports = {
     viewPostList: async (req, res) => {
         const { userId } = res.locals;
         const { size, page } = req.query;
-        console.log(size, page);
 
         try {
             const followList = await postService.followList(userId);
             const confirmFollow = followList.length;
+            const userMe = res.locals.userId;
             let arrTargetId = [];
             let data = [];
             if (confirmFollow !== 0) {
@@ -154,6 +154,7 @@ module.exports = {
                     const { targetId } = x;
                     arrTargetId.push({ userId: targetId });
                 }
+                arrTargetId.push({ userId: userMe });
                 const followPostList = await postService.followPostList(
                     arrTargetId
                 );
@@ -164,7 +165,7 @@ module.exports = {
                     const comments = i.Comments;
                     const commentCount = comments.length;
 
-                    const { nickname } = i.user;
+                    const { nickname, profileImageUrl } = i.user;
                     const {
                         postId,
                         userId,
@@ -224,6 +225,7 @@ module.exports = {
                         likeCount,
                         likeState,
                         bookmarkState,
+                        profileImageUrl,
                         createdAt,
                         updatedAt,
                         commentList: comment,
@@ -260,7 +262,7 @@ module.exports = {
                     const comments = i.Comments;
                     const commentCount = comments.length;
 
-                    const { nickname } = i.user;
+                    const { nickname, profileImageUrl } = i.user;
                     const {
                         postId,
                         userId,
@@ -320,6 +322,7 @@ module.exports = {
                         likeCount,
                         likeState,
                         bookmarkState,
+                        profileImageUrl,
                         createdAt,
                         updatedAt,
                         commentList: comment,
@@ -344,7 +347,7 @@ module.exports = {
 
                         const comments = i.Comments;
                         const commentCount = comments.length;
-                        const { nickname } = i.user;
+                        const { nickname, profileImageUrl } = i.user;
                         const {
                             postId,
                             userId,
@@ -404,6 +407,7 @@ module.exports = {
                             likeCount,
                             likeState,
                             bookmarkState,
+                            profileImageUrl,
                             createdAt,
                             updatedAt,
                             commentList: comment,

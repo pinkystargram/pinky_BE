@@ -20,8 +20,11 @@ if (process.env.PORT) {
         console.log(`HTTPS Server running on port ${port}`);
     });
 } else {
-    app.listen(port, () => {
+    const server = app.listen(port, () => {
         console.log(port, '번으로 서버가 연결되었습니다.');
         console.log(`http://localhost:${port}`);
     });
+
+    require('./config/socket').init(server);
+    require('./utils/socketHandler');
 }
