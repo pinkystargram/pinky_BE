@@ -1,4 +1,4 @@
-const { User, Chat, Room, Comment } = require('../../models');
+const { User, Chat, Room } = require('../../models');
 const { Op } = require('sequelize');
 const sequelize = require('sequelize');
 
@@ -6,15 +6,15 @@ module.exports = {
     findRoom: async ({ userId, targetId, roomId }) => {
         try {
             console.log('!!!', userId, targetId);
-            if (!userId || !targetId) {
+            if (!userId || !targetId || !roomId) {
                 //   throw customizedError(MESSAGE.WRONG_REQ, 400);
                 throw new Error('잘못된 요청입니다.');
             }
 
+            // TODO userId, targetId 서로 바뀌면 새로운 room이 생성되는 것 수정 필요
             const findRoom = await Room.findOne({
                 where: { roomId },
             });
-            console.log('???', findRoom);
             const findUser = await User.findOne({ where: { userId } });
             const findTarget = await User.findOne({
                 where: { userId: targetId },
@@ -33,7 +33,9 @@ module.exports = {
             console.log(error);
         }
     },
-    saveChatMessage: async () => {},
+    saveChatMessage: async ({ roomId, userId, targetId, chatText }) => {
+        // await Chat.create({where:{roomId}})
+    },
     getChatRoomList: async (userId) => {
         try {
             let arr = [];
