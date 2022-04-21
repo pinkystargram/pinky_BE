@@ -75,4 +75,11 @@ module.exports = {
 
         res.send({ result: true, email, nickname, userId, profileImageUrl });
     },
+    facebook: (req, res) => {
+        console.log('11');
+    },
+    facebookCallback: (req, res) => {
+        console.log(22);
+        redirect('/');
+    },
 };
