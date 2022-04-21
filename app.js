@@ -1,9 +1,11 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
+const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const morgan = require('morgan');
+const passport = require('passport');
 
 app.use(
     cors({
@@ -26,6 +28,19 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.disable('x-powered-by');
+app.use(
+    session({
+        resave: false,
+        saveUninitialized: false,
+        secret: process.env.SESSION_SECRET,
+        cookie: {
+            httpOnly: true,
+            secure: false,
+        },
+    })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 const Router = require('./routes');
 app.use('/api', Router);

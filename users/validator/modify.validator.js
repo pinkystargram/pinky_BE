@@ -2,6 +2,7 @@ const { body, validationResult } = require('express-validator');
 
 const error = (req, res, next) => {
     const errors = validationResult(req);
+
     if (errors.isEmpty()) {
         return next();
     }
@@ -10,21 +11,11 @@ const error = (req, res, next) => {
         .json({ result: false, message: errors.array()[0].msg });
 };
 
-const registerValidation = [
-    body('email')
-        .trim()
-        .isLength({ min: 5 })
-        .withMessage('아이디는 최소 5글자 이상이어야 합니다')
-        .isEmail()
-        .withMessage('아이디는 이메일 형식이어야 합니다'),
-    body('password')
-        .trim()
-        .isLength({ min: 5 })
-        .withMessage('비밀번호는 최소 5글자 이상이어야 합니다')
-        .isAlphanumeric()
-        .withMessage('비밀번호는 영문자와 숫자만 사용가능합니다'),
+const modifyValidation = [
     body('nickname')
         .trim()
+        .notEmpty()
+        .withMessage('닉네임은 반드시 입력해주셔야 합니다')
         .isLength({ min: 3 })
         .withMessage('닉네임은 최소 3글자 이상이어야 합니다')
         .isAlphanumeric('en-US', { ignore: '_' })
@@ -32,4 +23,4 @@ const registerValidation = [
     error,
 ];
 
-module.exports = registerValidation;
+module.exports = modifyValidation;

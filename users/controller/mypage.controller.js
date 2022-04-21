@@ -3,7 +3,7 @@ const profileMiddleware = require('../../middlewares/profileMulter');
 module.exports = {
     getMypage: async (req, res) => {
         if (req.params.userId === 'undefined')
-            return res.send({
+            return res.status(400).send({
                 result: false,
                 message: '유저정보가 잘못되었습니다',
             });
@@ -18,7 +18,7 @@ module.exports = {
     },
     follow: async (req, res) => {
         if (req.params.userId === 'undefined')
-            return res.send({
+            return res.status(400).send({
                 result: false,
                 message: '유저정보가 잘못되었습니다',
             });
@@ -27,7 +27,7 @@ module.exports = {
 
         try {
             if (targetId === userId) {
-                return res.send({
+                return res.status(400).send({
                     result: false,
                     message: '본인을 팔로우할 수 없습니다',
                 });
@@ -42,12 +42,12 @@ module.exports = {
             res.send({ result: true });
         } catch (error) {
             console.log(error);
-            res.send({ result: false, error });
+            res.status(400).send({ result: false, error });
         }
     },
     getUserInfo: async (req, res) => {
         if (req.params.userId === 'undefined')
-            return res.send({
+            return res.status(400).send({
                 result: false,
                 message: '유저정보가 잘못되었습니다',
             });
@@ -69,19 +69,20 @@ module.exports = {
             res.send({ result: true, data });
         } catch (error) {
             console.log(error);
-            res.send({ result: false, error });
+            res.status(400).send({ result: false, error });
         }
     },
     modify: async (req, res) => {
         const { userId } = res.locals;
         const { nickname, bio } = req.body;
         let profileImageUrl;
+
         if (req.file) profileImageUrl = req.file.location;
 
         try {
             const User = await userService.chkByUserId(userId);
             if (!User)
-                return res.send({
+                return res.status(400).send({
                     result: false,
                     message: '유저정보가 잘못되었습니다',
                 });
@@ -91,13 +92,12 @@ module.exports = {
             await userService.modify(userId, nickname, bio, profileImageUrl);
             res.send({ result: true });
         } catch (error) {
-            console.log(error);
-            res.send({ result: false, error });
+            res.status(400).send({ result: false, error });
         }
     },
     getFollow: async (req, res) => {
         if (req.params.userId === 'undefined')
-            return res.send({
+            return res.status(400).send({
                 result: false,
                 message: '유저정보가 잘못되었습니다',
             });
@@ -106,13 +106,12 @@ module.exports = {
             const data = await userService.getFollow(userId);
             res.send({ result: true, data });
         } catch (error) {
-            console.log(error);
-            res.send({ result: false, error });
+            res.status(400).send({ result: false, error });
         }
     },
     getFollower: async (req, res) => {
         if (req.params.userId === 'undefined')
-            return res.send({
+            return res.status(400).send({
                 result: false,
                 message: '유저정보가 잘못되었습니다',
             });
@@ -121,8 +120,7 @@ module.exports = {
             const data = await userService.getFollower(userId);
             res.send({ result: true, data });
         } catch (error) {
-            console.log(error);
-            res.send({ result: false, error });
+            res.status(400).send({ result: false, error });
         }
     },
 };

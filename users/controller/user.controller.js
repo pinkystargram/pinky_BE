@@ -8,13 +8,13 @@ module.exports = {
         const { email, nickname, password } = req.body;
         try {
             if (await userService.chkByEmail(email)) {
-                return res.send({
+                return res.status(400).send({
                     result: false,
                     message: '이미 ID가 존재합니다',
                 });
             }
             if (await userService.chkByNickname(nickname))
-                return res.send({
+                return res.status(400).send({
                     result: false,
                     message: '이미 닉네임이 존재합니다',
                 });
@@ -33,12 +33,12 @@ module.exports = {
         try {
             const user = await userService.chkByEmail(email);
             if (!user)
-                return res.send({
+                return res.status(400).send({
                     result: false,
                     message: '이메일이나 비밀번호가 잘못되었습니다',
                 });
             if (!bcrypt.compareSync(password, user.password))
-                return res.send({
+                return res.status(400).send({
                     result: false,
                     message: '이메일이나 비밀번호가 잘못되었습니다',
                 });
@@ -74,5 +74,38 @@ module.exports = {
         const { email, nickname, userId, profileImageUrl } = res.locals;
 
         res.send({ result: true, email, nickname, userId, profileImageUrl });
+    },
+    facebookCallback: async (req, res) => {
+        const email = req.user._json.email;
+        const agent = req.headers['user-agent'];
+        try {
+            const user = await userService.chkByEmail(email);
+
+            const payload = { userId: user.userId, nickname: user.nickname };
+            const accessToken = jwt.sign(payload, process.env.ACCESSKEY, {
+                expiresIn: process.env.ATOKENEXPIRE,
+            });
+            const refreshToken = jwt.sign(
+                { email: user.email },
+                process.env.REFRESHKEY,
+                { expiresIn: process.env.RTOKENEXPIRE }
+            );
+
+            const key = user.userId + agent;
+
+            await redis.set(key, refreshToken);
+
+            res.send({
+                result: true,
+                atoken: accessToken,
+                rtoken: refreshToken,
+                email: user.email,
+                nickname: user.nickname,
+                userId: user.userId,
+            });
+        } catch (error) {
+            console.log(error);
+            res.send({ result: false, error });
+        }
     },
 };

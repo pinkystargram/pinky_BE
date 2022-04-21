@@ -2,9 +2,9 @@ const Sequelize = require('sequelize');
 const { UUIDV4 } = require('sequelize');
 module.exports = function (sequelize, DataTypes) {
     return sequelize.define(
-        'Room',
+        'Timeline',
         {
-            roomId: {
+            timelineId: {
                 type: DataTypes.STRING(255),
                 defaultValue: UUIDV4,
                 allowNull: false,
@@ -18,35 +18,39 @@ module.exports = function (sequelize, DataTypes) {
                     key: 'userId',
                 },
             },
-            targetId: {
+            postId: {
                 type: DataTypes.STRING(255),
-                allowNull: false,
+                allowNull: true,
                 references: {
-                    model: 'User',
-                    key: 'userId',
+                    model: 'Post',
+                    key: 'postId',
                 },
+            },
+            status: {
+                type: DataTypes.STRING(30),
+                allowNull: false,
             },
         },
         {
             sequelize,
-            tableName: 'Room',
+            tableName: 'Timeline',
             timestamps: true,
             indexes: [
                 {
                     name: 'PRIMARY',
                     unique: true,
                     using: 'BTREE',
-                    fields: [{ name: 'roomId' }],
+                    fields: [{ name: 'timelineId' }],
                 },
                 {
-                    name: 'FK_User_TO_Room_1',
+                    name: 'FK_User_TO_Timeline_1',
                     using: 'BTREE',
                     fields: [{ name: 'userId' }],
                 },
                 {
-                    name: 'FK_User_TO_Room_2',
+                    name: 'FK_Post_TO_Timeline_1',
                     using: 'BTREE',
-                    fields: [{ name: 'targetId' }],
+                    fields: [{ name: 'postId' }],
                 },
             ],
         }
