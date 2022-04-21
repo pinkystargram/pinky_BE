@@ -3,9 +3,8 @@ const { Op } = require('sequelize');
 const sequelize = require('sequelize');
 
 module.exports = {
-    findRoom: async ({ userId, targetId, roomId }) => {
+    findRoom: async (userId, targetId, roomId) => {
         try {
-            console.log('!!!', userId, targetId);
             if (!userId || !targetId) {
                 //   throw customizedError(MESSAGE.WRONG_REQ, 400);
                 throw new Error('잘못된 요청입니다.');
@@ -14,7 +13,6 @@ module.exports = {
             const findRoom = await Room.findOne({
                 where: { roomId },
             });
-            console.log('???', findRoom);
             const findUser = await User.findOne({ where: { userId } });
             const findTarget = await User.findOne({
                 where: { userId: targetId },

@@ -37,14 +37,24 @@ io.on('connection', (socket) => {
     // socket room join
     // 프론트에서 내 userId와 상대방 targetId를 가져온다.
     // userId와 targetId로 같이 roomId를 찾아서 roomId로 room에 join한다
-    socket.on('joinRoom', async (userId, targetId, roomId) => {
-        console.log('joinRoom', ' userId : ', userId, ' targetId : ', targetId);
+    socket.on('joinRoom', async (roomId, userId, targetId) => {
+        console.log(
+            '룸에 들어왔어요. ',
+            ' room : ',
+            roomId,
+            ' userId : ',
+            userId,
+            ' targetId : ',
+            targetId
+        );
         try {
-            const findRoom = await chatService.findRoom({
+            const findRoom = await chatService.findRoom(
                 userId,
                 targetId,
-                roomId,
-            });
+                roomId
+            );
+
+            console.log('문제', findRoom);
             socket.join(findRoom);
             socket.leave(userId);
         } catch (error) {
