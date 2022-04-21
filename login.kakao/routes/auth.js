@@ -41,11 +41,11 @@ router.get(
             httpOnly: true,
             secure: true,
         });
-        res.header('atoken', accessToken);
-        res.header('rtoken', refreshToken);
-        res.header('email', user);
-        res.header('nickname', nickname.nickname);
-        res.header('userId', nickname.userId);
+        // res.header('ACCESS_TOKEN', accessToken);
+        // res.header('REFRESH_TOKEN', refreshToken);
+        // res.header('email', user);
+        // res.header('nickname', nickname.nickname);
+        // res.header('userId', nickname.userId);
         res.redirect(
             'http://ud.dicegame.react.s3-website.ap-northeast-2.amazonaws.com/'
         );
