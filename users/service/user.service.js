@@ -216,7 +216,8 @@ module.exports = {
             arr2.sort(() => Math.random() - 0.5); // 순서 랜덤
             arr2 = [...new Set(arr2)];
 
-            if (arr2.length < 5) limit -= arr2.length;
+            if (arr2.length < 5) limit = limit - arr2.length;
+            console.log(limit);
 
             let data = await User.findAll({
                 where: {
@@ -241,7 +242,7 @@ module.exports = {
                     },
                 ],
             }).then(async (result) => {
-                for (let i = 0; i < result.length; i++) {
+                for (let i = 0; i < limit; i++) {
                     const count = await Follow.count({
                         where: { targetId: result[i].userId },
                     });
@@ -258,7 +259,6 @@ module.exports = {
             await User.findAll({
                 attributes: ['nickname', 'profileImageUrl', 'userId'],
                 order: [sequelize.fn('rand')],
-                limit: limit,
                 where: {
                     [Op.and]: [
                         { userId: { [Op.notIn]: arr2 } },
@@ -267,7 +267,7 @@ module.exports = {
                     ],
                 },
             }).then((result) => {
-                for (let i = 0; i < result.length; i++) {
+                for (let i = 0; i < 2; i++) {
                     data.push(result[i]);
                 }
             });
