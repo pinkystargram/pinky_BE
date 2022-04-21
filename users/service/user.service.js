@@ -215,9 +215,8 @@ module.exports = {
             arr2 = arr2.filter((x) => !arr.includes(x)); // 겹치는거 빼주기
             arr2.sort(() => Math.random() - 0.5); // 순서 랜덤
             arr2 = [...new Set(arr2)];
-
-            if (arr2.length < 5) limit = limit - arr2.length;
-            console.log(limit);
+            if (arr2.length < 5) limit -= arr2.length;
+            else limit = 0;
 
             let data = await User.findAll({
                 where: {
@@ -232,6 +231,7 @@ module.exports = {
                     'userId',
                     [sequelize.literal('target_Follows.userId'), 'followId'],
                 ],
+                order: [['userId', 'DESC']],
                 include: [
                     {
                         model: Follow,
@@ -242,12 +242,12 @@ module.exports = {
                     },
                 ],
             }).then(async (result) => {
-                for (let i = 0; i < limit; i++) {
+                if (result.length > 5) result.length = 5;
+                for (let i = 0; i < result.length; i++) {
                     const count = await Follow.count({
                         where: { targetId: result[i].userId },
                     });
                     result[i].dataValues.count = count - 1;
-                    console.log(result[i].dataValues.followId);
                     const id = await User.findOne({
                         where: { userId: result[i].dataValues.followId },
                     });
@@ -259,6 +259,7 @@ module.exports = {
             await User.findAll({
                 attributes: ['nickname', 'profileImageUrl', 'userId'],
                 order: [sequelize.fn('rand')],
+                limit: limit,
                 where: {
                     [Op.and]: [
                         { userId: { [Op.notIn]: arr2 } },
@@ -267,7 +268,7 @@ module.exports = {
                     ],
                 },
             }).then((result) => {
-                for (let i = 0; i < 2; i++) {
+                for (let i = 0; i < result.length; i++) {
                     data.push(result[i]);
                 }
             });
