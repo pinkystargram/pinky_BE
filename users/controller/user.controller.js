@@ -106,7 +106,9 @@ module.exports = {
                 httpOnly: true,
             });
 
-            return res.redirect('/');
+            return res.redirect(
+                'http://ud.dicegame.react.s3-website.ap-northeast-2.amazonaws.com'
+            );
             // return res.send({
             //     result: true,
             //     atoken: accessToken,
