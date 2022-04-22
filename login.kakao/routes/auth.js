@@ -31,16 +31,8 @@ router.get(
         });
         const key = user.userId + agent;
         await redis.set(key, refreshToken);
-        res.cookie('ACCESS_TOKEN', accessToken, {
-            sameSite: 'None',
-            httpOnly: true,
-            secure: true,
-        });
-        res.cookie('REFRESH_TOKEN', refreshToken, {
-            sameSite: 'None',
-            httpOnly: true,
-            secure: true,
-        });
+        res.cookie('ACCESS_TOKEN', accessToken);
+        res.cookie('REFRESH_TOKEN', refreshToken);
         // res.header('ACCESS_TOKEN', accessToken);
         // res.header('REFRESH_TOKEN', refreshToken);
         // res.header('email', user);
